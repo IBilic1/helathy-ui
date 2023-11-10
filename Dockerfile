@@ -1,15 +1,12 @@
 FROM node:18.14.0-alpine3.17
 
-WORKDIR /app
+WORKDIR /usr/src/app
+COPY package.json yarn.lock ./
+RUN yarn
+COPY . ./
+RUN yarn build
 
-COPY package.json ./
-
-COPY yarn.lock ./
-
-RUN yarn install --frozen-lockfile
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+FROM bitnami/nginx:latest
+COPY --from=builder /usr/src/app/build /app
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
