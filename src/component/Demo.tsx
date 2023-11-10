@@ -41,6 +41,12 @@ export default function Demo() {
 
     }, [setelctedDay])
 
+    React.useEffect(() => {
+        if (open) {
+            refetch()
+        }
+    }, [open])
+
     return <>
         <div>
             <Box sx={{display: 'flex', width: '100%'}}>
@@ -85,12 +91,13 @@ export default function Demo() {
             <Paper sx={{marginTop: '1.5rem', padding: '1rem'}}>
                 <Box sx={{display: 'flex', justifyContent: "end"}}>
                     {
-                        isAdmin && <Button variant='contained' type='submit' onClick={() => setOpen(true)}>Create appointment</Button>
+                        isAdmin && <Button variant='contained' type='submit' onClick={() => setOpen(true)}>Create
+                            appointment</Button>
                     }
                 </Box>
                 {data && <BasicTable data={data} refetch={refetchData}/>}
             </Paper>
         </div>
-        <EditAppointmentModal open={open} setOpen={setOpen} refetch={refetchData}/>
+        {open && <EditAppointmentModal open={open} setOpen={setOpen} refetch={refetchData}/>}
     </>
 }

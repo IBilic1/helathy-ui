@@ -31,7 +31,6 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
     const [start, setStart] = useState<Dayjs | undefined | null>(null)
     const [end, setEnd] = useState<Dayjs | undefined | null>(null)
     const [patientEmail, setPatientEmail] = useState<string | undefined>()
-    console.log(start);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -61,7 +60,6 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
         }
         refetch()
         setOpen(false)
-
     };
 
     React.useEffect(() => {
@@ -71,6 +69,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
             setStart(dayjs(appointment.startDateTime))
         }
     }, [appointment])
+
     return (
         <Modal
             open={open}
