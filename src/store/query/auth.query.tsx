@@ -16,7 +16,7 @@ const baseQuery = (url: string) => {
 
 export const authApi = createApi({
     reducerPath: 'authApi',
-    baseQuery: baseQuery('http://localhost:8080'),
+    baseQuery: baseQuery('https://helathyapp-git-tosh.apps.na410r.prod.ole.redhat.com:8080'),
     endpoints: (builder) => ({
         signIn: builder.mutation<AuthResponse, LoginRequest>({
             query: (body) => ({

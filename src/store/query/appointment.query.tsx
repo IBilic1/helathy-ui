@@ -21,7 +21,7 @@ const baseQuery = (url: string) => {
 
 export const appointmentApi = createApi({
     reducerPath: 'appointmentApi',
-    baseQuery: baseQuery('http://localhost:8080'),
+    baseQuery: baseQuery('https://helathyapp-git-tosh.apps.na410r.prod.ole.redhat.com:8080'),
     endpoints: (builder) => ({
         getAppointmentsByDoctor: builder.query<Appointment[], void>({
             query: () => ({
