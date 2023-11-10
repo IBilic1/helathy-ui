@@ -32,11 +32,11 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
     const [end, setEnd] = useState<Dayjs | undefined | null>(null)
     const [patientEmail, setPatientEmail] = useState<string | undefined>()
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if (appointment) {
-            updateAppointment(
+            await updateAppointment(
                 {
                     id: appointment?.id,
                     startDateTime: start?.toISOString() ?? moment().toISOString(),
@@ -48,18 +48,23 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                         lastName: undefined,
                         email: patientEmail
                     } as User
-                })
+                }).then(() => {
+                refetch()
+                setOpen(false)
+            })
         } else {
-            createAppoinment(
+            await createAppoinment(
                 {
                     startDateTime: start?.toISOString() ?? moment().toISOString(),
                     endDateTime: end?.toISOString() ?? moment().toISOString(),
                     address: data.get('address') as string,
                     patient: {email: patientEmail} as User,
-                })
+                }).then(() => {
+                refetch()
+                setOpen(false)
+            })
         }
-        refetch()
-        setOpen(false)
+
     };
 
     React.useEffect(() => {
