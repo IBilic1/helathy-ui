@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import {Container, FormControl, MenuItem, Modal, Select, SelectChangeEvent} from '@mui/material';
+import {Container, MenuItem, Modal, Select, SelectChangeEvent} from '@mui/material';
 import TextField from "@mui/material/TextField";
 import {DateTimePicker} from "@mui/x-date-pickers";
 import {
@@ -66,14 +66,13 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
         }
 
     };
-
     React.useEffect(() => {
         if (appointment) {
             setPatientEmail(appointment?.patient?.email)
             setEnd(dayjs(appointment.endDateTime))
             setStart(dayjs(appointment.startDateTime))
         }
-    }, [appointment])
+    }, [appointment, users])
 
     return (
         <Modal
@@ -127,22 +126,22 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControl fullWidth>
+                                {
+                                    ((users && patientEmail) || (users && !appointment)) &&
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         label="Patient"
                                         value={patientEmail}
-                                        onChange={(value: SelectChangeEvent<string>) => setPatientEmail(value.target.value)}
+                                        onChange={(value: SelectChangeEvent) => {
+                                            setPatientEmail(value.target.value)
+                                        }}
                                     >
-                                        {
-                                            users &&
-                                            users.map((user: User) =>
-                                                <MenuItem value={user.email}>{user.firstName} {user.lastName}</MenuItem>
-                                            )
-                                        }
+                                        {users.map((user: User) => <MenuItem key={user.email}
+                                                                             value={user.email}>{user.firstName} {user.lastName}</MenuItem>
+                                        )}
                                     </Select>
-                                </FormControl>
+                                }
                             </Grid>
                         </Grid>
                         <Button
