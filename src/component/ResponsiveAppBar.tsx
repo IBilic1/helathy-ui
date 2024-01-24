@@ -6,17 +6,21 @@ import Typography from '@mui/material/Typography';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
-import {Link} from "@mui/material";
+import {Link, Select} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {LOCALES} from "./locales";
 
-
-function ResponsiveAppBar() {
+export type ResponsiveAppBarProps = {
+    setLangugage: React.Dispatch<React.SetStateAction<string>>;
+}
+function ResponsiveAppBar({setLangugage}:ResponsiveAppBarProps) {
     const access_token = localStorage.getItem('access_token');
     const navigate = useNavigate();
 
     return (
         <AppBar position="static">
             <Container maxWidth={false}>
+
                 <Toolbar disableGutters>
                     <Link href="/home" sx={{color: 'white', display: 'flex'}}>
                         <MedicalInformationIcon
@@ -38,23 +42,35 @@ function ResponsiveAppBar() {
                             HEALTHY
                         </Typography>
                     </Link>
-                   <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                       {access_token && <Link href="/appointments" sx={{color: 'white', display: 'flex'}}>
-                           <Typography
-                               align="justify"
-                               noWrap
-                               component="a"
-                               sx={{
-                                   mr: 2,
-                                   display: {xs: 'none', md: 'flex'},
-                                   fontFamily: 'monospace',
-                                   color: 'white',
-                                   textDecoration: 'none',
-                               }}
-                           >
-                               REMOTE OFFICE
-                           </Typography>
-                       </Link>}
+                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                        {access_token && <Link href="/appointments" sx={{color: 'white', display: 'flex'}}>
+                            <Typography
+                                align="justify"
+                                noWrap
+                                component="a"
+                                sx={{
+                                    mr: 2,
+                                    display: {xs: 'none', md: 'flex'},
+                                    fontFamily: 'monospace',
+                                    color: 'white',
+                                    textDecoration: 'none',
+                                }}
+                            >
+                                REMOTE OFFICE
+                            </Typography>
+                        </Link>}
+                    </Box>
+                    <Box>
+                        <Select
+                            label="Language"
+                            onChange={(event) => {
+                                console.log(event.target.value);
+                                setLangugage(event.target.value === LOCALES.CROATIAN ? LOCALES.CROATIAN : LOCALES.ENGLISH);
+                            }}
+                        >
+                            <MenuItem value={LOCALES.ENGLISH}>EN</MenuItem>
+                            <MenuItem value={LOCALES.CROATIAN}>HRV</MenuItem>
+                        </Select>
                     </Box>
                     <Box sx={{flexGrow: 0}}>
                         <MenuItem>

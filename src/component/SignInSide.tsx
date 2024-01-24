@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import {Container, Link} from '@mui/material';
+import {FormattedMessage} from "react-intl";
 
 export default function SignInSide() {
 
@@ -30,17 +31,19 @@ export default function SignInSide() {
                             color="text.primary"
                             gutterBottom
                         >
-                            WELCOME TO HEALTHY
+                            <FormattedMessage
+                                id="welcome"/>
                         </Typography>
                         <Typography variant="h5" align="justify" color="text.secondary" component="p">
-                            Are you ready to unlock a world of possibilities? We're thrilled to have you here at
-                            Healthy, your gateway to an incredible digital experience.
+                            <FormattedMessage
+                                id="app_description"/>
                         </Typography>
                         <Button variant="contained" size="large" sx={{
                             my: 6,
                         }}>
                             <Link href="/sign-up" sx={{color: 'white', display: 'flex'}}>
-                                Sign Up Now
+                                <FormattedMessage
+                                    id="signUpNow"/>
                             </Link>
                         </Button>
                     </Container>

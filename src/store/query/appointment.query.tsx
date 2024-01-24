@@ -9,7 +9,6 @@ const baseQuery = (url: string) => {
         {
             baseUrl: url,
             prepareHeaders: async (headers) => {
-                // Set headers based on the fetch args URL.
                 headers.append('Origin', 'http://localhost:3000');
                 if (access_token && access_token !== "undefined") {
                     headers.append('Authorization', 'Bearer ' + access_token);
@@ -21,11 +20,17 @@ const baseQuery = (url: string) => {
 
 export const appointmentApi = createApi({
     reducerPath: 'appointmentApi',
-    baseQuery: baseQuery('https://helathyapp-git-tosh.apps.na410r.prod.ole.redhat.com'),
+    baseQuery: baseQuery('http://localhost:8080'),
     endpoints: (builder) => ({
         getAppointmentsByDoctor: builder.query<Appointment[], void>({
             query: () => ({
                 url: `/api/v1/appointment`,
+                method: 'GET',
+            }),
+        }),
+        getAppointmentsByUser: builder.query<Appointment[], void>({
+            query: () => ({
+                url: `/api/v1/appointment/for-user`,
                 method: 'GET',
             }),
         }),
@@ -63,5 +68,6 @@ export const {
     useCreateAppointmentMutation,
     useGetAllUsersQuery,
     useDeleteAppointmentMutation,
-    useUpdateAppointmentMutation
+    useUpdateAppointmentMutation,
+    useGetAppointmentsByUserQuery
 } = appointmentApi

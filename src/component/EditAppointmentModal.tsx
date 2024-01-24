@@ -16,6 +16,7 @@ import {
 import moment from "moment";
 import {Appointment, User} from "../types/auth/types";
 import dayjs, {Dayjs} from "dayjs";
+import {FormattedMessage} from "react-intl";
 
 export type EditAppointmentModalProps = {
     open: boolean;
@@ -30,7 +31,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
     const {data: users} = useGetAllUsersQuery();
     const [start, setStart] = useState<Dayjs | undefined | null>(null)
     const [end, setEnd] = useState<Dayjs | undefined | null>(null)
-    const [patientEmail, setPatientEmail] = useState<string | undefined>()
+    const [patientEmail, setPatientEmail] = useState<string>("")
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -68,7 +69,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
     };
     React.useEffect(() => {
         if (appointment) {
-            setPatientEmail(appointment?.patient?.email)
+            setPatientEmail(appointment?.patient?.email ?? "")
             setEnd(dayjs(appointment.endDateTime))
             setStart(dayjs(appointment.startDateTime))
         }
@@ -98,20 +99,20 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                     }}
                 >
                     <Typography component="h1" variant="h5">
-                        Appointment
+                        <FormattedMessage id="appointment"/>
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <DateTimePicker
-                                    label="Start"
+                                    label={<FormattedMessage id="end"/>}
                                     value={start}
                                     onChange={(value: Dayjs | null) => setStart(value)}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <DateTimePicker
-                                    label="End"
+                                    label={<FormattedMessage id="end"/>}
                                     value={end}
                                     onChange={(value: Dayjs | null) => setEnd(value)}
                                 />
@@ -120,23 +121,25 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 <TextField
                                     required
                                     fullWidth
-                                    label="Address"
+                                    label={<FormattedMessage id="address"/>}
                                     name="address"
                                     defaultValue={appointment?.address}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 {
-                                    ((users && patientEmail) || (users && !appointment)) &&
+                                    users &&
                                     <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        label="Patient"
+                                        displayEmpty
                                         value={patientEmail}
                                         onChange={(value: SelectChangeEvent) => {
                                             setPatientEmail(value.target.value)
                                         }}
                                     >
+                                        <MenuItem value="" disabled>
+                                            <em style={{color: 'grey'}}><FormattedMessage
+                                                id="prescription_patient"/></em>
+                                        </MenuItem>
                                         {users.map((user: User) => <MenuItem key={user.email}
                                                                              value={user.email}>{user.firstName} {user.lastName}</MenuItem>
                                         )}
@@ -149,7 +152,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                         >
-                            {appointment ? 'Update' : 'Create'}
+                            {appointment ? <FormattedMessage id="edit"/> : <FormattedMessage id="create"/>}
                         </Button>
                     </Box>
                 </Box>

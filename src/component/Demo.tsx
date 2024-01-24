@@ -5,7 +5,7 @@ import {DateCalendar} from "@mui/x-date-pickers/DateCalendar";
 import BasicTable from "./BasicTable";
 import EditAppointmentModal from "./EditAppointmentModal";
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import {useGetAppointmentsByDoctorQuery} from "../store/query/appointment.query";
+import {useGetAppointmentsByDoctorQuery, useGetAppointmentsByUserQuery} from "../store/query/appointment.query";
 import {Appointment} from "../types/auth/types";
 import SelectedDate from "./calnedar/SelectedDate";
 import dayjs, {Dayjs} from "dayjs";
@@ -14,7 +14,7 @@ import {getRoleFromToken} from "../utils/utils";
 
 export default function Demo() {
     const isAdmin = getRoleFromToken();
-    const {data, refetch} = useGetAppointmentsByDoctorQuery()
+    const {data, refetch} = useGetAppointmentsByDoctorQuery();
     const [open, setOpen] = useState<boolean>(false)
     const [highlightedDays, setHighlightedDays] = useState<number[] | undefined>()
     const [setelctedDay, setSetelctedDay] = useState<Dayjs | null>()

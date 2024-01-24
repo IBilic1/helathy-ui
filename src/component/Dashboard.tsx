@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import {mainListItems, secondaryListItems} from './listItems';
+import MainListItems from './listItems';
 
 const drawerWidth: number = 240;
 
@@ -40,8 +40,6 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
     }),
 );
 
-const defaultTheme = createTheme();
-
 export type DashboardProps = {
     children: JSX.Element;
 };
@@ -53,7 +51,6 @@ export default function Dashboard({children}: DashboardProps) {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
             <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
                 <Drawer variant="permanent" open={open}>
@@ -71,9 +68,7 @@ export default function Dashboard({children}: DashboardProps) {
                     </Toolbar>
                     <Divider/>
                     <List component="nav">
-                        {mainListItems}
-                        <Divider sx={{my: 1}}/>
-                        {secondaryListItems}
+                        <MainListItems/>
                     </List>
                 </Drawer>
                 <Box
@@ -84,7 +79,7 @@ export default function Dashboard({children}: DashboardProps) {
                                 ? theme.palette.grey[100]
                                 : theme.palette.grey[900],
                         flexGrow: 1,
-                        height: '100vh',
+                        height: '90vh',
                         overflow: 'auto',
                     }}
                 >
@@ -95,6 +90,5 @@ export default function Dashboard({children}: DashboardProps) {
                     </Container>
                 </Box>
             </Box>
-        </ThemeProvider>
     );
 }
