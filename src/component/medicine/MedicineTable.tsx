@@ -12,6 +12,7 @@ import {Button, TextField} from "@mui/material";
 import EditMedicineModal from "./EditMedicineModal";
 import ConfirmDialog from "../dialog/ConfirmDialog";
 import {useDeleteMedicineMutation} from "../../store/query/medicine.query";
+import {FormattedMessage} from "react-intl";
 
 export type BasicTableProp = {
     data: Medicine[] | undefined;
@@ -31,8 +32,8 @@ export default function MedicineTable({data, refetch}: BasicTableProp) {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left">Name</TableCell>
-                            <TableCell align="left">Description</TableCell>
+                            <TableCell align="left"><FormattedMessage id="medicine_name" /></TableCell>
+                            <TableCell align="left"><FormattedMessage id="medicine_description" /></TableCell>
                             <TableCell align="left"></TableCell>
                         </TableRow>
                     </TableHead>
@@ -51,13 +52,13 @@ export default function MedicineTable({data, refetch}: BasicTableProp) {
                                                     setMedicine(row)
                                                     setOpen(true)
                                                 }}
-                                                >Edit</Button>
+                                                ><FormattedMessage id="edit" /></Button>
                                                 <Button
                                                     onClick={() => {
                                                         setMedicineToDelete(row)
                                                         setDeleteDialog(true)
                                                     }}>
-                                                    Delete
+                                                    <FormattedMessage id="delete" />
                                                 </Button>
                                             </>
                                         }

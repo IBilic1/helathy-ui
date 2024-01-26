@@ -10,6 +10,7 @@ import {Appointment} from "../types/auth/types";
 import SelectedDate from "./calnedar/SelectedDate";
 import dayjs, {Dayjs} from "dayjs";
 import {getRoleFromToken} from "../utils/utils";
+import {FormattedMessage} from "react-intl";
 
 
 export default function Demo() {
@@ -73,26 +74,22 @@ export default function Demo() {
                             {selectedAppointment?.doctor?.firstName} {selectedAppointment?.doctor?.lastName}
                         </Typography>
                         <Typography variant="h5">
-                            Address: {selectedAppointment?.address}
+                            <FormattedMessage id="address"/>: {selectedAppointment?.address}
                         </Typography>
                         <Typography variant="body2">
                             <br/>
-                            {'To reschedule your appointment, please contact our office at [Phone Number] or r' +
-                            'eply to this email with your preferred date and time. If you have any specific topics ' +
-                            'or quest ions you\'' +
-                            'd like to discuss during your appointment, please feel free to let us know in advance.'}
+                            <FormattedMessage id="appointments_description"/>
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button size="large">Learn More</Button>
+                        <Button size="large"><FormattedMessage id="appointments_learn_more"/></Button>
                     </CardActions>
                 </Card>
             </Box>
             <Paper sx={{marginTop: '1.5rem', padding: '1rem'}}>
                 <Box sx={{display: 'flex', justifyContent: "end"}}>
                     {
-                        isAdmin && <Button variant='contained' type='submit' onClick={() => setOpen(true)}>Create
-                            appointment</Button>
+                        isAdmin && <Button variant='contained' type='submit' onClick={() => setOpen(true)}><FormattedMessage id="appointments_create_appointment"/></Button>
                     }
                 </Box>
                 {data && <BasicTable data={data} refetch={refetchData}/>}

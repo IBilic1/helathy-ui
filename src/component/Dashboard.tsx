@@ -52,7 +52,6 @@ export default function Dashboard({children}: DashboardProps) {
 
     return (
             <Box sx={{display: 'flex'}}>
-                <CssBaseline/>
                 <Drawer variant="permanent" open={open}>
                     <Toolbar
                         sx={{
@@ -79,7 +78,7 @@ export default function Dashboard({children}: DashboardProps) {
                                 ? theme.palette.grey[100]
                                 : theme.palette.grey[900],
                         flexGrow: 1,
-                        height: '90vh',
+                        height: '92vh',
                         overflow: 'auto',
                     }}
                 >

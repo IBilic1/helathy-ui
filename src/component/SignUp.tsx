@@ -12,9 +12,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from "./Copyright";
 import {useSignUpMutation} from "../store/query/auth.query";
 import {useNavigate} from "react-router-dom";
+import {FormattedMessage} from "react-intl";
 
 export default function SignUp() {
     const navigate = useNavigate();
@@ -80,7 +80,7 @@ export default function SignUp() {
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    <FormattedMessage id="signUp"/>
                 </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                     <Grid container spacing={2}>
@@ -91,10 +91,11 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="firstName"
-                                label="First Name"
+                                label={<FormattedMessage id="firstName"/>}
                                 autoFocus
                             />
-                            <Typography variant="body2" color="error" sx={{ paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                            <Typography variant="body2" color="error"
+                                        sx={{paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem'}}>
                                 {formErrors.firstName}
                             </Typography>
                         </Grid>
@@ -103,11 +104,12 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="lastName"
-                                label="Last Name"
+                                label={<FormattedMessage id="lastName"/>}
                                 name="lastName"
                                 autoComplete="family-name"
                             />
-                            <Typography variant="body2" color="error" sx={{ paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                            <Typography variant="body2" color="error"
+                                        sx={{paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem'}}>
                                 {formErrors.lastName}
                             </Typography>
                         </Grid>
@@ -116,11 +118,12 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label={<FormattedMessage id="email"/>}
                                 name="email"
                                 autoComplete="email"
                             />
-                            <Typography variant="body2" color="error" sx={{ paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                            <Typography variant="body2" color="error"
+                                        sx={{paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem'}}>
                                 {formErrors.email}
                             </Typography>
                         </Grid>
@@ -129,12 +132,13 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label={<FormattedMessage id="password"/>}
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
                             />
-                            <Typography variant="body2" color="error" sx={{ paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                            <Typography variant="body2" color="error"
+                                        sx={{paddingLeft: 2, fontSize: '0.8rem', marginTop: '0.5rem'}}>
                                 {formErrors.password}
                             </Typography>
                         </Grid>
@@ -149,7 +153,7 @@ export default function SignUp() {
                                             setRole("USER")
                                         }
                                     })}/>}
-                                label="I am doctor"
+                                label={<FormattedMessage id="iAmDoctor"/>}
                             />
                         </Grid>
                     </Grid>
@@ -159,18 +163,17 @@ export default function SignUp() {
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
                     >
-                        Sign Up
+                        {<FormattedMessage id="signUp"/>}
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Link href="/sign-in" variant="body2">
-                                Already have an account? Sign in
+                                <FormattedMessage id="alreadyHaveAnAccount"/>
                             </Link>
                         </Grid>
                     </Grid>
                 </Box>
             </Box>
-            <Copyright sx={{mt: 5}}/>
         </Container>
     );
 }

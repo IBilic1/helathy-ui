@@ -12,9 +12,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from './Copyright';
 import {useSignInMutation} from "../store/query/auth.query";
 import {useNavigate} from "react-router-dom";
+import {FormattedMessage} from "react-intl";
 
 export default function SignIn() {
     const navigate = useNavigate();
@@ -67,15 +67,14 @@ export default function SignIn() {
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
+                    <FormattedMessage id="signIn"/> </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                     <TextField
                         margin="normal"
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label={<FormattedMessage id="email"/>}
                         name="email"
                         autoComplete="email"
                         autoFocus
@@ -89,7 +88,7 @@ export default function SignIn() {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label={<FormattedMessage id="password"/>}
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -100,7 +99,7 @@ export default function SignIn() {
                     </Typography>
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
+                        label={<FormattedMessage id="rememberMe"/>}
                     />
                     <Button
                         type="submit"
@@ -113,18 +112,17 @@ export default function SignIn() {
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
-                                Forgot password?
+                                {<FormattedMessage id="forgotPassword"/>}
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link href="/sign-up" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                                {<FormattedMessage id="dontHaveAccount"/>}
                             </Link>
                         </Grid>
                     </Grid>
                 </Box>
             </Box>
-            <Copyright sx={{mt: 8, mb: 4}}/>
         </Container>
     );
 }

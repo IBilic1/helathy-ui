@@ -9,11 +9,14 @@ import MenuItem from '@mui/material/MenuItem';
 import {Link, Select} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {LOCALES} from "./locales";
+import {FormattedMessage} from "react-intl";
+import {getRoleFromToken} from "../utils/utils";
 
 export type ResponsiveAppBarProps = {
+    language: string;
     setLangugage: React.Dispatch<React.SetStateAction<string>>;
 }
-function ResponsiveAppBar({setLangugage}:ResponsiveAppBarProps) {
+function ResponsiveAppBar({setLangugage, language}:ResponsiveAppBarProps) {
     const access_token = localStorage.getItem('access_token');
     const navigate = useNavigate();
 
@@ -56,15 +59,15 @@ function ResponsiveAppBar({setLangugage}:ResponsiveAppBarProps) {
                                     textDecoration: 'none',
                                 }}
                             >
-                                REMOTE OFFICE
+                                <FormattedMessage id="remoteOffice" />
                             </Typography>
                         </Link>}
                     </Box>
                     <Box>
                         <Select
                             label="Language"
+                            defaultValue={language}
                             onChange={(event) => {
-                                console.log(event.target.value);
                                 setLangugage(event.target.value === LOCALES.CROATIAN ? LOCALES.CROATIAN : LOCALES.ENGLISH);
                             }}
                         >
@@ -75,8 +78,8 @@ function ResponsiveAppBar({setLangugage}:ResponsiveAppBarProps) {
                     <Box sx={{flexGrow: 0}}>
                         <MenuItem>
                             {
-                                !access_token && <Link href="/sign-in" sx={{color: 'white', display: 'block'}}>
-                                    <Typography textAlign="center">SING IN</Typography>
+                                !access_token && <Link href="/sign-in" sx={{color: 'white', display: 'block', textTransform: "uppercase"}}>
+                                    <Typography textAlign="center"><FormattedMessage id="signIn" /></Typography>
                                 </Link>
                             }
                             {
@@ -86,7 +89,7 @@ function ResponsiveAppBar({setLangugage}:ResponsiveAppBarProps) {
                                     navigate("/sign-in")
                                 }}
                                                       sx={{color: 'white', display: 'block'}}>
-                                    <Typography textAlign="center">SIGN OUT</Typography>
+                                    <Typography textAlign="center"><FormattedMessage id="signOut" /></Typography>
                                 </Link>
                             }
                         </MenuItem>

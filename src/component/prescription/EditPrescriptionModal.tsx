@@ -87,12 +87,14 @@ export default function EditPrescriptionModal({open, setOpen, prescription, refe
                 refetch();
                 enqueueSnackbar(<FormattedMessage id="prescription_successMessage"/>, {variant: "success"})
                 setOpen(false);
+                setOrders([])
             });
         }
     };
 
     return (
         <Paper>
+
             <Formik
                 initialValues={{} as Prescription}
                 onSubmit={handleSubmit}>
@@ -101,6 +103,8 @@ export default function EditPrescriptionModal({open, setOpen, prescription, refe
                         padding: '16px',
                         margin: '16px',
                     }}>
+                        <Typography sx={{margin: '1rem 0rem', textTransform: "uppercase"}}><FormattedMessage
+                            id="prescription_add_prescription"/></Typography>
                         <Grid item xs={12}>
                             {
                                 users && (
@@ -128,7 +132,7 @@ export default function EditPrescriptionModal({open, setOpen, prescription, refe
                                        style={{
                                            padding: '16px',
                                            width: '20rem',
-                                           height: '26rem',
+                                           height: '28rem',
                                            backgroundColor: '#FFF5EE'
                                        }}>
                                     <Label><FormattedMessage id="order_description"/></Label>
@@ -163,7 +167,8 @@ export default function EditPrescriptionModal({open, setOpen, prescription, refe
                                                 setOrders([...orders, props.values.helperOrder])
                                             }
                                         }
-                                    }}><FormattedMessage id="order_add_order"/></Button>
+                                    }} variant="contained"
+                                            sx={{marginTop: '2rem'}}><FormattedMessage id="order_add_order"/></Button>
                                 </Paper>
                             </Box>
                             <Box sx={{

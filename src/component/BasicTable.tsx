@@ -13,6 +13,7 @@ import EditAppointmentModal from "./EditAppointmentModal";
 import ConfirmDialog from "./dialog/ConfirmDialog";
 import {useDeleteAppointmentMutation} from "../store/query/appointment.query";
 import {getRoleFromToken} from "../utils/utils";
+import {FormattedMessage} from "react-intl";
 
 export type BasicTableProp = {
     data: Appointment[];
@@ -33,10 +34,10 @@ export default function BasicTable({data, refetch}: BasicTableProp) {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left">Address</TableCell>
-                            <TableCell align="left">Start</TableCell>
-                            <TableCell align="left">End</TableCell>
-                            <TableCell align="left">Doctor</TableCell>
+                            <TableCell align="left"><FormattedMessage id="appointments_address"/></TableCell>
+                            <TableCell align="left"><FormattedMessage id="start"/></TableCell>
+                            <TableCell align="left"><FormattedMessage id="end"/></TableCell>
+                            <TableCell align="left"><FormattedMessage id="doctor"/></TableCell>
                             <TableCell align="left"></TableCell>
                         </TableRow>
                     </TableHead>
@@ -58,13 +59,13 @@ export default function BasicTable({data, refetch}: BasicTableProp) {
                                                     setAppointment(row)
                                                     setOpen(true)
                                                 }}
-                                                >Edit</Button>
+                                                ><FormattedMessage id="edit"/></Button>
                                                 <Button
                                                     onClick={() => {
                                                         setAppointmentToDelete(row)
                                                         setDeleteDialog(true)
                                                     }}
-                                                >Delete</Button>
+                                                ><FormattedMessage id="delete"/></Button>
                                             </>
                                         }
                                     </div>
