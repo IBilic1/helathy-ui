@@ -16,7 +16,7 @@ You will also see any lint errors in the console.
 
 ### `yarn install`
 
-Install dependencies.\
+Install dependencies.
 
 ## Learn More
 
