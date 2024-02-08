@@ -13,7 +13,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import Protected from "./component/route/Protected";
 import Medicine from "./component/medicine/Medicine";
 import PresciptionTable from "./component/prescription/PresciptionTable";
-import {theme} from "./theme";
+import {theme} from "./customTheme";
 import {SnackbarProvider} from 'notistack';
 import {IntlProvider} from "react-intl";
 import {messages} from "./messages";

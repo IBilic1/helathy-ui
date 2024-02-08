@@ -2,6 +2,8 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {AuthResponse, LoginRequest, SignUpRequest, User} from "../../types/auth/types";
 
+const BACKED_URL = process.env.REACT_APP_BACKEND
+
 const baseQuery = (url: string) => {
     return fetchBaseQuery(
         {
@@ -16,7 +18,7 @@ const baseQuery = (url: string) => {
 
 export const authApi = createApi({
     reducerPath: 'authApi',
-    baseQuery: baseQuery('http://localhost:8080'),
+    baseQuery: baseQuery(BACKED_URL || ''),
     endpoints: (builder) => ({
         signIn: builder.mutation<AuthResponse, LoginRequest>({
             query: (body) => ({

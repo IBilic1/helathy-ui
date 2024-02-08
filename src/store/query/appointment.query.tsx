@@ -1,26 +1,13 @@
 // Need to use the React-specific entry point to allow generating React hooks
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {createApi} from '@reduxjs/toolkit/query/react'
 import {Appointment, User} from "../../types/auth/types";
+import {baseQuery} from "../baseQuery";
 
-const baseQuery = (url: string) => {
-    const access_token = localStorage.getItem('access_token');
-
-    return fetchBaseQuery(
-        {
-            baseUrl: url,
-            prepareHeaders: async (headers) => {
-                headers.append('Origin', 'http://localhost:3000');
-                if (access_token && access_token !== "undefined") {
-                    headers.append('Authorization', 'Bearer ' + access_token);
-                }
-                return headers;
-            }
-        });
-};
+const BACKED_URL = process.env.REACT_APP_BACKEND
 
 export const appointmentApi = createApi({
     reducerPath: 'appointmentApi',
-    baseQuery: baseQuery('http://localhost:8080'),
+    baseQuery: baseQuery(BACKED_URL || ''),
     endpoints: (builder) => ({
         getAppointmentsByDoctor: builder.query<Appointment[], void>({
             query: () => ({
