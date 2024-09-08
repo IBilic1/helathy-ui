@@ -1,17 +1,15 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 
 export const baseQuery = (url: string) => {
-    const access_token = localStorage.getItem('access_token');
-    const ORIGIN_URL = process.env.REACT_ORIGIN
+    const BACKED_URL = process.env.REACT_APP_BACKEND
 
     return fetchBaseQuery(
         {
             baseUrl: url,
-            prepareHeaders: async (headers) => {
-                headers.append('Origin', ORIGIN_URL || '');
-                if (access_token && access_token !== "undefined") {
-                    headers.append('Authorization', 'Bearer ' + access_token);
-                }
+            credentials: "include",
+            prepareHeaders: (headers) => {
+                headers.append('Access-Control-Allow-Credentials', 'true');
+                headers.append('Access-Control-Allow-Origin', BACKED_URL || '');
                 return headers;
             }
         });

@@ -7,12 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Appointment} from "../types/auth/types";
-import {Button} from "@mui/material";
-import EditAppointmentModal from "./EditAppointmentModal";
-import ConfirmDialog from "./dialog/ConfirmDialog";
-import {useDeleteAppointmentMutation} from "../store/query/appointment.query";
-import {getRoleFromToken} from "../utils/utils";
+import {Appointment} from "../../types/auth/types";
+import {Button, Typography} from "@mui/material";
+import EditAppointmentModal from "../manufacturer/EditAppointmentModal";
+import ConfirmDialog from "../dialog/ConfirmDialog";
+import {useDeleteAppointmentMutation} from "../../store/query/appointment.query";
+import {useRole} from "../../utils/utils";
 import {FormattedMessage} from "react-intl";
 
 export type BasicTableProp = {
@@ -20,8 +20,8 @@ export type BasicTableProp = {
     refetch: () => void;
 }
 
-export default function BasicTable({data, refetch}: BasicTableProp) {
-    const isAdmin = getRoleFromToken();
+export default function AppointmentTable({data, refetch}: BasicTableProp) {
+    const isAdmin = useRole();
     const [deleteAppointment] = useDeleteAppointmentMutation();
     const [appointment, setAppointment] = useState<Appointment | undefined>()
     const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>()
@@ -49,7 +49,7 @@ export default function BasicTable({data, refetch}: BasicTableProp) {
                                 <TableCell align="left">{row.address}</TableCell>
                                 <TableCell align="left">{row.startDateTime}</TableCell>
                                 <TableCell align="left">{row.endDateTime}</TableCell>
-                                <TableCell align="left">{row.doctor?.firstName} {row.doctor?.lastName}</TableCell>
+                                <TableCell align="left">{row.doctor?.name} {row.doctor?.name}</TableCell>
                                 <TableCell align="left">
                                     <div>
                                         {

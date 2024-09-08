@@ -10,17 +10,17 @@ import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import {useDeleteManufacturerMutation, useGetAllManufacturersQuery} from "../store/query/manufacturer.query";
+import {useDeleteManufacturerMutation, useGetAllManufacturersQuery} from "../../store/query/manufacturer.query";
 import {Button} from "@mui/material";
-import {getRoleFromToken} from "../utils/utils";
-import {Manufacturer} from "../types/auth/types";
+import {useRole} from "../../utils/utils";
+import {Manufacturer} from "../../types/auth/types";
 import EditManufacturerComponent from "./EditManufacturerComponent";
-import ConfirmDialog from "./dialog/ConfirmDialog";
+import ConfirmDialog from "../dialog/ConfirmDialog";
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import {FormattedMessage} from "react-intl";
 
 export default function Manufacturers() {
-    const isAdmin = getRoleFromToken();
+    const isAdmin = useRole();
     const {data, refetch} = useGetAllManufacturersQuery()
     const [deleteManufacturer] = useDeleteManufacturerMutation();
     const [open, setOpen] = useState<boolean>(false)

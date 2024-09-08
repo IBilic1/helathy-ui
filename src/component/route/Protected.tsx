@@ -13,4 +13,5 @@ const Protected = ({isLoggedIn, children, isAdminLogged, isAdminProtected}: Prot
     }
     return children;
 };
+
 export default Protected;

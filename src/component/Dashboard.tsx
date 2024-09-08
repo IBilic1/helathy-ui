@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import MainListItems from './listItems';
+import Menu from './Menu';
 
 const drawerWidth: number = 240;
 
@@ -67,7 +67,7 @@ export default function Dashboard({children}: DashboardProps) {
                     </Toolbar>
                     <Divider/>
                     <List component="nav">
-                        <MainListItems/>
+                        <Menu/>
                     </List>
                 </Drawer>
                 <Box

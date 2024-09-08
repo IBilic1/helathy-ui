@@ -3,13 +3,13 @@ import {useState} from 'react';
 import {useGetAllMedicinesQuery} from "../../store/query/medicine.query";
 import MedicineTable from "./MedicineTable";
 import {Box, Button, Paper, TextField} from "@mui/material";
-import {getRoleFromToken} from "../../utils/utils";
+import {useRole} from "../../utils/utils";
 import EditMedicineModal from "./EditMedicineModal";
-import Manufacturers from "../Manufacturers";
+import Manufacturers from "../manufacturer/Manufacturers";
 import {FormattedMessage} from "react-intl";
 
-const Medicine = () => {
-    const isAdmin = getRoleFromToken();
+export default function Medicine() {
+    const isAdmin = useRole();
     const {data, refetch} = useGetAllMedicinesQuery();
     const [open, setOpen] = useState<boolean>(false)
     const [filterValue, setFilterValue] = useState<string>('');
@@ -24,14 +24,14 @@ const Medicine = () => {
             <Manufacturers/>
         </Paper>
         <Paper sx={{marginTop: '1.5rem', padding: '1rem'}}>
-            <Box sx={{display: 'flex', justifyContent: "space-between", marginBottom:'1rem'}}>
+            <Box sx={{display: 'flex', justifyContent: "space-between", marginBottom: '1rem'}}>
                 {
                     isAdmin && <Button variant='contained' type='submit' onClick={() => setOpen(true)}>
-                        <FormattedMessage id="medicine_createMedicine" />
+                        <FormattedMessage id="medicine_createMedicine"/>
                     </Button>
                 }
                 <TextField
-                    label={<FormattedMessage id="medicine_filter" />}
+                    label={<FormattedMessage id="medicine_filter"/>}
                     variant="outlined"
                     value={filterValue}
                     onChange={(e) => setFilterValue(e.target.value)}
@@ -46,4 +46,3 @@ const Medicine = () => {
 
 
 };
-export default Medicine;

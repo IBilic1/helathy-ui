@@ -121,7 +121,7 @@ export default function EditPrescriptionModal({open, setOpen, prescription, refe
                                                 id="prescription_patient"/></em>
                                         </MenuItem>
                                         {users.map((user: User) => <MenuItem key={user.email}
-                                                                             value={user.email}>{user.firstName} {user.lastName}</MenuItem>
+                                                                             value={user.email}>{user.name} {user.name}</MenuItem>
                                         )}
                                     </Select>)
                             }

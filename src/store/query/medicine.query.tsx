@@ -10,33 +10,33 @@ export const medicineApi = createApi({
     endpoints: (builder) => ({
         getAllMedicines: builder.query<Medicine[], void>({
             query: () => ({
-                url: `/api/v1/medicine`,
+                url: `/medicine`,
                 method: 'GET',
             }),
         }),
         getMedicine: builder.query<Medicine[], number>({
             query: (id: number) => ({
-                url: `/api/v1/medicine/${id}`,
+                url: `/medicine/${id}`,
                 method: 'GET',
             }),
         }),
         createMedicine: builder.mutation<void, Medicine>({
             query: (body) => ({
-                url: `/api/v1/medicine`,
+                url: `/medicine`,
                 method: 'POST',
                 body,
             }),
         }),
         updateMedicine: builder.mutation<void, Medicine>({
             query: (body) => ({
-                url: `/api/v1/medicine`,
+                url: `/medicine`,
                 method: 'PUT',
                 body,
             }),
         }),
         deleteMedicine: builder.mutation<void, number>({
             query: (id) => ({
-                url: `/api/v1/medicine/${id}`,
+                url: `/medicine/${id}`,
                 method: 'DELETE',
             }),
         }),

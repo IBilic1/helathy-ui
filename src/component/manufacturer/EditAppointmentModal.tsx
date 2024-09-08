@@ -12,9 +12,9 @@ import {
     useCreateAppointmentMutation,
     useGetAllUsersQuery,
     useUpdateAppointmentMutation
-} from "../store/query/appointment.query";
+} from "../../store/query/appointment.query";
 import moment from "moment";
-import {Appointment, User} from "../types/auth/types";
+import {Appointment, User} from "../../types/auth/types";
 import dayjs, {Dayjs} from "dayjs";
 import {FormattedMessage} from "react-intl";
 
@@ -45,7 +45,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                     address: data.get('address') as string,
                     patient: {
                         id: undefined,
-                        firstName: undefined,
+                        name: undefined,
                         lastName: undefined,
                         email: patientEmail
                     } as User
@@ -141,7 +141,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                                 id="prescription_patient"/></em>
                                         </MenuItem>
                                         {users.map((user: User) => <MenuItem key={user.email}
-                                                                             value={user.email}>{user.firstName} {user.lastName}</MenuItem>
+                                                                             value={user.email}>{user.name} {user.name}</MenuItem>
                                         )}
                                     </Select>
                                 }

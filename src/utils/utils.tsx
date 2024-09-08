@@ -1,11 +1,8 @@
-export const getRoleFromToken = () => {
-    const access_token = localStorage.getItem('access_token');
-    if (access_token) {
-        let jwtData = access_token.split('.')[1]
-        let decodedJwtJsonData = window.atob(jwtData)
-        let decodedJwtData = JSON.parse(decodedJwtJsonData)
-        return decodedJwtData.authorities === "ADMIN"
-    }
+import {useGetUserQuery} from "../store/query/auth.query";
 
-    return false
+export const useRole = () => {
+    console.log("ivana");
+    const {data: user} = useGetUserQuery();
+    console.log(user);
+    return user?.role === 'ADMIN'
 }

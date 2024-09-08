@@ -8,16 +8,17 @@ import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import {Link, Select} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import {LOCALES} from "./locales";
+import {LOCALES} from "../constants/locales";
 import {FormattedMessage} from "react-intl";
-import {getRoleFromToken} from "../utils/utils";
+import {useGetUserQuery} from "../store/query/auth.query";
 
 export type ResponsiveAppBarProps = {
     language: string;
     setLangugage: React.Dispatch<React.SetStateAction<string>>;
 }
-function ResponsiveAppBar({setLangugage, language}:ResponsiveAppBarProps) {
-    const access_token = localStorage.getItem('access_token');
+
+function ResponsiveAppBar({setLangugage, language}: ResponsiveAppBarProps) {
+    const {data: user} = useGetUserQuery();
     const navigate = useNavigate();
 
     return (
@@ -46,7 +47,7 @@ function ResponsiveAppBar({setLangugage, language}:ResponsiveAppBarProps) {
                         </Typography>
                     </Link>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        {access_token && <Link href="/appointments" sx={{color: 'white', display: 'flex'}}>
+                        {user?.email && <Link href="/main" sx={{color: 'white', display: 'flex'}}>
                             <Typography
                                 align="justify"
                                 noWrap
@@ -59,7 +60,7 @@ function ResponsiveAppBar({setLangugage, language}:ResponsiveAppBarProps) {
                                     textDecoration: 'none',
                                 }}
                             >
-                                <FormattedMessage id="remoteOffice" />
+                                <FormattedMessage id="remoteOffice"/>
                             </Typography>
                         </Link>}
                     </Box>
@@ -78,18 +79,22 @@ function ResponsiveAppBar({setLangugage, language}:ResponsiveAppBarProps) {
                     <Box sx={{flexGrow: 0}}>
                         <MenuItem>
                             {
-                                !access_token && <Link href="/sign-in" sx={{color: 'white', display: 'block', textTransform: "uppercase"}}>
-                                    <Typography textAlign="center"><FormattedMessage id="signIn" /></Typography>
+                                !user?.email && <Link href="/sign-in" sx={{
+                                    color: 'white',
+                                    display: 'block',
+                                    textTransform: "uppercase"
+                                }}>
+                                    <Typography textAlign="center"><FormattedMessage id="signIn"/></Typography>
                                 </Link>
                             }
                             {
-                                access_token && <Link onClick={() => {
+                                user?.email && <Link onClick={() => {
                                     localStorage.removeItem('access_token')
                                     localStorage.removeItem('refresh_token')
                                     navigate("/sign-in")
                                 }}
-                                                      sx={{color: 'white', display: 'block'}}>
-                                    <Typography textAlign="center"><FormattedMessage id="signOut" /></Typography>
+                                                     sx={{color: 'white', display: 'block'}}>
+                                    <Typography textAlign="center"><FormattedMessage id="signOut"/></Typography>
                                 </Link>
                             }
                         </MenuItem>

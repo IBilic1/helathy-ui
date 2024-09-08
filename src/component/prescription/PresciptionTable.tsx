@@ -6,11 +6,25 @@ import {useGetAllPrescriptionsQuery} from "../../store/query/prescription.query"
 import PrescriptionAccordian from "./PrescriptionAccordian";
 import {Box, TextField} from "@mui/material";
 import {FormattedMessage} from "react-intl";
-import {getRoleFromToken} from "../../utils/utils";
+import {useRole} from "../../utils/utils";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
+import globalStyles from "../styles";
+
+const styles = {
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%'
+    },
+    card: {width: '100%', marginLeft: '1.5rem'},
+    cardFontSize: {fontSize: 23},
+    cardMargin: {mb: 1.5},
+};
 
 export default function PresciptionTable() {
-    const isAdmin = getRoleFromToken();
+    const isAdmin = useRole();
     const {data, refetch} = useGetAllPrescriptionsQuery();
     const [open, setOpen] = useState<boolean>(false)
     const [filterValue, setFilterValue] = useState<string>('');
@@ -21,7 +35,7 @@ export default function PresciptionTable() {
 
     return (<>
             {isAdmin &&
-            <EditPrescriptionModal open={open} setOpen={setOpen} refetch={refetch}/>}
+                <EditPrescriptionModal open={open} setOpen={setOpen} refetch={refetch}/>}
             <Paper sx={{
                 height: isAdmin ? '26rem' : '70vh',
                 width: '100%',
@@ -29,26 +43,26 @@ export default function PresciptionTable() {
                 , backgroundColor: '#EDEEF3'
             }}>
                 {isAdmin &&
-                <TextField
-                    label={<FormattedMessage id="prescription_filter"/>}
-                    variant="outlined"
-                    style={{margin: '1rem'}}
-                    value={filterValue}
-                    onChange={(e) => setFilterValue(e.target.value)}
-                />}
+                    <TextField
+                        label={<FormattedMessage id="prescription_filter"/>}
+                        variant="outlined"
+                        style={{margin: '1rem'}}
+                        value={filterValue}
+                        onChange={(e) => setFilterValue(e.target.value)}
+                    />}
                 {(filterValue ? filteredData : data)?.map((row) => (
                     <PrescriptionAccordian prescription={row} refetch={refetch}/>
                 ))}
                 {
-                    (!data || !filteredData) && <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '100%'
-                    }}> <DoNotDisturbAltIcon sx={{
-                        fontSize: 150
-                    }} aria-label="No data"/>No data</Box>
+                    (!data || !filteredData) &&
+                    <Box sx={globalStyles.centerContainer}>
+                        <Box sx={styles.container}>
+                            <DoNotDisturbAltIcon sx={{fontSize: 150}} aria-label="No data"/>
+                           <Box>
+                               No data
+                           </Box>
+                        </Box>
+                    </Box>
                 }
             </Paper>
         </>

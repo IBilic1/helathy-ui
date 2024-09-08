@@ -11,39 +11,39 @@ export const appointmentApi = createApi({
     endpoints: (builder) => ({
         getAppointmentsByDoctor: builder.query<Appointment[], void>({
             query: () => ({
-                url: `/api/v1/appointment`,
+                url: `/appointment`,
                 method: 'GET',
             }),
         }),
         getAppointmentsByUser: builder.query<Appointment[], void>({
             query: () => ({
-                url: `/api/v1/appointment/for-user`,
+                url: `/appointment/for-user`,
                 method: 'GET',
             }),
         }),
         createAppointment: builder.mutation<void, Appointment>({
             query: (body) => ({
-                url: `/api/v1/appointment`,
+                url: `/appointment`,
                 method: 'POST',
                 body,
             }),
         }),
         updateAppointment: builder.mutation<void, Appointment>({
             query: (body) => ({
-                url: `/api/v1/appointment`,
+                url: `/appointment`,
                 method: 'PUT',
                 body,
             }),
         }),
         getAllUsers: builder.query<User[], void>({
             query: () => ({
-                url: `/api/v1/user/all`,
+                url: `/user/all`,
                 method: 'GET',
             }),
         }),
         deleteAppointment: builder.mutation<void, number>({
             query: (id) => ({
-                url: `/api/v1/appointment/${id}`,
+                url: `/appointment/${id}`,
                 method: 'DELETE',
             }),
         }),

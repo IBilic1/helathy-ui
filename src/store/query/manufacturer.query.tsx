@@ -10,27 +10,27 @@ export const manufacturerApi = createApi({
     endpoints: (builder) => ({
         getAllManufacturers: builder.query<Manufacturer[], void>({
             query: () => ({
-                url: `/api/v1/manufacturer`,
+                url: `/manufacturer`,
                 method: 'GET',
             }),
         }),
         createManufacturer: builder.mutation<void, Manufacturer>({
             query: (body) => ({
-                url: `/api/v1/manufacturer`,
+                url: `/manufacturer`,
                 method: 'POST',
                 body,
             }),
         }),
         updateManufacturer: builder.mutation<void, Manufacturer>({
             query: (body) => ({
-                url: `/api/v1/manufacturer`,
+                url: `/manufacturer`,
                 method: 'PUT',
                 body,
             }),
         }),
         deleteManufacturer: builder.mutation<void, number>({
             query: (id) => ({
-                url: `/api/v1/manufacturer/${id}`,
+                url: `/manufacturer/${id}`,
                 method: 'DELETE',
             }),
         }),
