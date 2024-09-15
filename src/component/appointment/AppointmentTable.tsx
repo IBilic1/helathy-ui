@@ -1,90 +1,92 @@
 import * as React from 'react';
 import {useState} from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Table from '@mui/joy/Table';
 import {Appointment} from "../../types/auth/types";
-import {Button, Typography} from "@mui/material";
-import EditAppointmentModal from "../manufacturer/EditAppointmentModal";
+import EditAppointmentModal from "./EditAppointmentModal";
 import ConfirmDialog from "../dialog/ConfirmDialog";
 import {useDeleteAppointmentMutation} from "../../store/query/appointment.query";
 import {useRole} from "../../utils/utils";
 import {FormattedMessage} from "react-intl";
+import {Dayjs} from "dayjs";
 
 export type BasicTableProp = {
+    selectedDay?: Dayjs;
     data: Appointment[];
     refetch: () => void;
-}
+};
 
-export default function AppointmentTable({data, refetch}: BasicTableProp) {
+export default function AppointmentTable({selectedDay, data, refetch}: BasicTableProp) {
     const isAdmin = useRole();
     const [deleteAppointment] = useDeleteAppointmentMutation();
-    const [appointment, setAppointment] = useState<Appointment | undefined>()
-    const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>()
-    const [open, setOpen] = useState<boolean>(false)
-    const [openDeleteDialog, setDeleteDialog] = useState<boolean>(false)
+    const [appointment, setAppointment] = useState<Appointment | undefined>();
+    const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>();
+    const [open, setOpen] = useState<boolean>(false);
+    const [openDeleteDialog, setDeleteDialog] = useState<boolean>(false);
 
+    const filteredData = data.filter((appointment) => {
+        if (!selectedDay) return true;
+        const appointmentDate = new Date(appointment.startDateTime || '');
+        const selectedDate = selectedDay.startOf('day').toDate();
+        return (
+            appointmentDate.toDateString() === selectedDate.toDateString()
+        );
+    });
 
-    return (<>
-            <TableContainer component={Paper}>
-                <Table sx={{minWidth: 650}} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="left"><FormattedMessage id="appointments_address"/></TableCell>
-                            <TableCell align="left"><FormattedMessage id="start"/></TableCell>
-                            <TableCell align="left"><FormattedMessage id="end"/></TableCell>
-                            <TableCell align="left"><FormattedMessage id="doctor"/></TableCell>
-                            <TableCell align="left"></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.map((row) => (
-                            <TableRow
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell align="left">{row.address}</TableCell>
-                                <TableCell align="left">{row.startDateTime}</TableCell>
-                                <TableCell align="left">{row.endDateTime}</TableCell>
-                                <TableCell align="left">{row.doctor?.name} {row.doctor?.name}</TableCell>
-                                <TableCell align="left">
-                                    <div>
-                                        {
-                                            isAdmin &&
-                                            <>
-                                                <Button onClick={() => {
-                                                    setAppointment(row)
-                                                    setOpen(true)
-                                                }}
-                                                ><FormattedMessage id="edit"/></Button>
-                                                <Button
-                                                    onClick={() => {
-                                                        setAppointmentToDelete(row)
-                                                        setDeleteDialog(true)
-                                                    }}
-                                                ><FormattedMessage id="delete"/></Button>
-                                            </>
-                                        }
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+    return (
+        <>
+            <Table aria-label="appointments table">
+                <thead>
+                <tr>
+                    <th style={{width: '40%'}}><FormattedMessage id="appointments_address"/></th>
+                    <th><FormattedMessage id="start"/></th>
+                    <th><FormattedMessage id="end"/></th>
+                    <th><FormattedMessage id="doctor"/></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {filteredData.map((row) => (
+                    <tr key={row.id}>
+                        <td>{row.address}</td>
+                        <td>{row.startDateTime}</td>
+                        <td>{row.endDateTime}</td>
+                        <td>{row.doctor?.name}</td>
+                        <td>
+                            {isAdmin && (
+                                <div>
+                                    <button
+                                        onClick={() => {
+                                            setAppointment(row);
+                                            setOpen(true);
+                                        }}
+                                    >
+                                        <FormattedMessage id="edit"/>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setAppointmentToDelete(row);
+                                            setDeleteDialog(true);
+                                        }}
+                                    >
+                                        <FormattedMessage id="delete"/>
+                                    </button>
+                                </div>
+                            )}
+                        </td>
+                    </tr>
+                ))}
+                </tbody>
+            </Table>
             <EditAppointmentModal open={open} setOpen={setOpen} appointment={appointment} refetch={refetch}/>
             <ConfirmDialog
                 open={openDeleteDialog}
                 setOpen={setDeleteDialog}
                 title="Delete appointment"
-                description="Are you sure you want to delete appointment"
+                description="Are you sure you want to delete the appointment?"
                 onConfirm={() => {
                     appointmentToDelete?.id && deleteAppointment(appointmentToDelete?.id).then(() => {
-                        refetch()
-                    })
+                        refetch();
+                    });
                 }}
             />
         </>

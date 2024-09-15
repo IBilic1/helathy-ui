@@ -5,12 +5,20 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import Container from '@mui/material/Container';
-import MenuItem from '@mui/material/MenuItem';
-import {Link, Select} from "@mui/material";
+import {Link, MenuItem, Select} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {LOCALES} from "../constants/locales";
 import {FormattedMessage} from "react-intl";
 import {useGetUserQuery} from "../store/query/auth.query";
+import {ColorSchemeToggle} from "./Home";
+import {CssVarsProvider} from "@mui/joy/styles";
+import framesxTheme from "../theme";
+import Divider from "@mui/material/Divider";
+import List from "@mui/joy/List";
+import Menu from "./Menu";
+import {Drawer, ModalClose} from "@mui/joy";
+import IconButton from "@mui/joy/IconButton";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export type ResponsiveAppBarProps = {
     language: string;
@@ -19,13 +27,23 @@ export type ResponsiveAppBarProps = {
 
 function ResponsiveAppBar({setLangugage, language}: ResponsiveAppBarProps) {
     const {data: user} = useGetUserQuery();
+    const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
 
     return (
-        <AppBar position="static">
+        <AppBar position="absolute">
             <Container maxWidth={false}>
-
+                <Drawer open={open} onClose={() => setOpen(false)} >
+                    <ModalClose/>
+                    <Divider/>
+                    <List component="nav">
+                        <Menu setOpen={setOpen}/>
+                    </List>
+                </Drawer>
                 <Toolbar disableGutters>
+                    {user?.email && <IconButton variant="outlined" color="neutral" onClick={() => setOpen(true)} sx={{mr: 4}}>
+                        <MenuIcon/>
+                    </IconButton>}
                     <Link href="/home" sx={{color: 'white', display: 'flex'}}>
                         <MedicalInformationIcon
                             sx={{display: {xs: 'none', md: 'flex'}, mr: 1, mt: 0.4, color: 'white'}}/>
@@ -97,6 +115,13 @@ function ResponsiveAppBar({setLangugage, language}: ResponsiveAppBarProps) {
                                     <Typography textAlign="center"><FormattedMessage id="signOut"/></Typography>
                                 </Link>
                             }
+                        </MenuItem>
+                    </Box>
+                    <Box sx={{flexGrow: 0}}>
+                        <MenuItem>
+                            <CssVarsProvider disableTransitionOnChange theme={framesxTheme}>
+                                <ColorSchemeToggle/>
+                            </CssVarsProvider>
                         </MenuItem>
                     </Box>
                 </Toolbar>

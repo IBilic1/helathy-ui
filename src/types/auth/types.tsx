@@ -7,8 +7,8 @@ export type User = {
 
 export type Appointment = {
     id?: number;
-    startDateTime: string;
-    endDateTime: string;
+    startDateTime?: string;
+    endDateTime?: string;
     address: string;
     doctor?: User;
     patient?: User;
