@@ -10,7 +10,7 @@ import SelectedDate from "../calnedar/SelectedDate";
 import dayjs, {Dayjs} from "dayjs";
 import {useRole} from "../../utils/utils";
 import {FormattedMessage} from "react-intl";
-import globalStyles from "../styles";
+import globalStyles from "./styles";
 import framesxTheme from "../../theme";
 import {CssVarsProvider} from "@mui/joy/styles";
 import {
@@ -87,6 +87,7 @@ export default function Appointments() {
             },
         },
     });
+
     return <Box sx={styles.margin}>
         <CssVarsProvider disableTransitionOnChange theme={framesxTheme}>
             <Box sx={styles.container}>
@@ -100,23 +101,20 @@ export default function Appointments() {
                                 slotProps={{
                                     calendarHeader: {
                                         sx: {
-                                            // Styles for the header containing month-year, and navigation arrows
                                             '& .MuiPickersCalendarHeader-root': {
-                                                color: '#3479E8', // Ensure text is white (or light) for dark mode
+                                                color: '#3479E8',
                                             },
-                                            // Styles for the weekday labels
                                             '& .MuiDayCalendar-weekDayLabel': {
-                                                color: '#3479E8', // Light grey for weekday labels
+                                                color: '#3479E8',
                                             },
-                                            // Styles for the arrows for month navigation
                                             '& .MuiPickersCalendarHeader-labelContainer': {
-                                                color: '#3479E8', // Make month-year text white
+                                                color: '#3479E8',
                                             },
                                             '& .MuiPickersArrowSwitcher-root button': {
-                                                color: '#3479E8', // Make navigation arrows white
+                                                color: '#3479E8',
                                             },
                                             '& .MuiPickersCalendarHeader-switchViewButton': {
-                                                color: '#3479E8', // Make navigation arrows white
+                                                color: '#3479E8',
                                             },
                                         },
                                     },
@@ -133,17 +131,17 @@ export default function Appointments() {
                     {
                         selectedAppointment ?
                             (<CardContent sx={globalStyles.mediumHeight}>
-                                <Typography sx={styles.cardFontSize} color="neutral" gutterBottom>
+                                <Typography sx={styles.cardFontSize} color="primary" gutterBottom>
                                     <LocalHospitalIcon fontSize="large"/>
                                 </Typography>
-                                <Typography variant="solid" component="div"></Typography>
-                                <Typography sx={styles.cardMargin} color="neutral">
-                                    {selectedAppointment?.doctor?.name} {selectedAppointment?.doctor?.name}
+                                <Typography sx={styles.cardMargin} variant="soft">
+                                    <FormattedMessage
+                                        id="doctor"/> {selectedAppointment?.doctor?.name} {selectedAppointment?.doctor?.name}
                                 </Typography>
-                                <Typography variant="solid">
+                                <Typography variant="soft">
                                     <FormattedMessage id="address"/>: {selectedAppointment?.address}
                                 </Typography>
-                                <Typography variant="solid">
+                                <Typography>
                                     <br/>
                                     <FormattedMessage id="appointments_description"/>
                                 </Typography>

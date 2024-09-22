@@ -5,13 +5,19 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
-import GoogleIcon from './GoogleIcon';
+import GoogleIcon from '../component/icon/GoogleIcon';
 import framesxTheme from "../theme";
+import {FormattedMessage} from "react-intl";
+import GitHubIcon from "../component/icon/GitHubIcon";
 
 
-export default function JoySignInSideTemplate() {
+export default function Login() {
     const onGithubLogin = () => {
         window.location.href = "http://localhost:8080/oauth2/authorization/github"
+    }
+
+    const onGoogleLogin = () => {
+        window.location.href = "http://localhost:8080/oauth2/authorization/google"
     }
 
     return (
@@ -74,7 +80,7 @@ export default function JoySignInSideTemplate() {
                         <Stack sx={{gap: 4, mb: 2}}>
                             <Stack>
                                 <Typography component="h1" level="h3">
-                                    Stay secure with google
+                                    <FormattedMessage id="stay_safe_with"/>
                                 </Typography>
                                 <Typography level="body-sm">
                                 </Typography>
@@ -84,9 +90,18 @@ export default function JoySignInSideTemplate() {
                                 color="neutral"
                                 fullWidth
                                 onClick={onGithubLogin}
+                                startDecorator={<GitHubIcon/>}
+                            >
+                                <FormattedMessage id="continue_with_github"/>
+                            </Button>
+                            <Button
+                                variant="soft"
+                                color="neutral"
+                                fullWidth
+                                onClick={onGoogleLogin}
                                 startDecorator={<GoogleIcon/>}
                             >
-                                Continue with Google
+                                <FormattedMessage id="continue_with_google"/>
                             </Button>
                         </Stack>
                     </Box>
@@ -106,14 +121,13 @@ export default function JoySignInSideTemplate() {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
-                    backgroundImage:
-                        'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
+                    backgroundImage: 'url("openart-image_HJPhAC7j_1726942256956_raw.jpg")',
                     [theme.getColorSchemeSelector('dark')]: {
-                        backgroundImage:
-                            'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
+                        backgroundImage: 'url("openart-image_wVbNncwY_1726942166699_raw.jpg")',
                     },
                 })}
-            />
+            >
+            </Box>
         </CssVarsProvider>
     );
 }

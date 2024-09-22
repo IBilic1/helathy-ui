@@ -3,11 +3,9 @@ import {createApi} from '@reduxjs/toolkit/query/react'
 import {Appointment, User} from "../../types/auth/types";
 import {baseQuery} from "../baseQuery";
 
-const BACKED_URL = process.env.REACT_APP_BACKEND
-
 export const appointmentApi = createApi({
     reducerPath: 'appointmentApi',
-    baseQuery: baseQuery(BACKED_URL || ''),
+    baseQuery: baseQuery(),
     endpoints: (builder) => ({
         getAppointmentsByDoctor: builder.query<Appointment[], void>({
             query: () => ({

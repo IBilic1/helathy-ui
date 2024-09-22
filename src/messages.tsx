@@ -59,8 +59,20 @@ export const messages = {
         rememberMe: "Remember me",
         alreadyHaveAnAccount: "Already have an account? Sign in",
         appointmentIsNotSelected: "Appointment is not selected",
-        appointments_do_not_exists: "Appointments do not exists"
-
+        appointments_do_not_exists: "Appointments do not exists",
+        continue_with_google: "Continue with Google",
+        continue_with_github: "Continue with Github",
+        stay_safe_with: "Stay safe with",
+        manage_your_appointments_with_ease: "Manage Your Appointments with Ease",
+        simplify_your_healthcare: "Simplify your healthcare with our appointment management app",
+        book_track_manage: "Book, track, and manage all your medical appointments in one place. Stay organized and never miss a visit again.",
+        stay_healthy_stay_secure: "Stay healthy, stay secure",
+        simplify_your_healthcare_with_secure_access: "Simplify Your Healthcare with Secure Access",
+        manage_appointments_securely: "Easily manage your medical appointments while ensuring your data is secure. We offer secure login through trusted platforms like Google or GitHub, reducing the risk of password-related breaches.",
+        sign_in_securely_using: "Or sign in securely using:",
+        the_power_to_do_more: "The power to do more",
+        secure_and_trusted_healthcare_management: "Secure and Trusted Healthcare Management",
+        internal_team_authenticates_doctors: "Our internal team ensures that all doctor accounts are authenticated through a secure process. Using our internal app, Healthy app administrators manage doctor profiles, verifying credentials and safeguarding patient trust.",
     },
     [LOCALES.CROATIAN]: {
         edit: "Uredi",
@@ -120,6 +132,19 @@ export const messages = {
         rememberMe: "Zapamti me",
         alreadyHaveAnAccount: "Već imate račun? Prijaviti se",
         appointmentIsNotSelected: "Pregled nije odabran",
-        appointments_do_not_exists: "Ne postoji niti jedan pregled"
+        appointments_do_not_exists: "Ne postoji niti jedan pregled",
+        continue_with_google: "Nastavite s Google-om",
+        continue_with_github: "Nastavite s Github-om",
+        stay_safe_with: "Ostanite sigurni s",
+        manage_your_appointments_with_ease: "Upravljajte svojim terminima s lakoćom",
+        simplify_your_healthcare: "Pojednostavite posjete liječniku s našom aplikacijom za upravljanje terminima",
+        book_track_manage: "Rezervirajte, pratite i upravljajte svim svojim medicinskim terminima na jednom mjestu. Ostanite organizirani i nikada ne propustite posjet.",
+        stay_healthy_stay_secure: "Ostanite zdravi, ostanite sigurni",
+        simplify_your_healthcare_with_secure_access: "Pojednostavite svoju zdravstvenu skrb uz siguran pristup",
+        manage_appointments_securely: "Jednostavno upravljajte svojim terminima uz osiguranje sigurnosti vaših podataka. Nudimo sigurno prijavljivanje putem pouzdanih platformi kao što su Google ili GitHub, smanjujući rizik od proboja povezanih s lozinkama.",
+        sign_in_securely_using: "Ili se sigurno prijavite koristeći:",
+        the_power_to_do_more: "Moć da učinite više",
+        secure_and_trusted_healthcare_management: "Sigurno i pouzdano upravljanje vremenom",
+        internal_team_authenticates_doctors: "Naš interni tim osigurava da svi računi liječnika budu autentificirani kroz siguran proces. Korištenjem naše interne aplikacije, administratori Healthy aplikacije upravljaju profilima liječnika, provjeravaju vjerodajnice i štite povjerenje pacijenata."
     },
 };

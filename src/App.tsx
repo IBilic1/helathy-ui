@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
-import {CssBaseline} from "@mui/material";
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
-import SignInSide from "./component/Home";
+import Home from "./component/Home";
 import Dashboard from "./component/Dashboard";
 import Appointments from "./component/appointment/Appointments";
 import {LocalizationProvider} from "@mui/x-date-pickers";
@@ -14,19 +13,18 @@ import {messages} from "./messages";
 import {LOCALES} from "./constants/locales";
 import "dayjs/locale/en";
 import "dayjs/locale/hr";
-import {useGetUserQuery} from "./store/query/auth.query";
-import ResponsiveAppBar from "./component/ResponsiveAppBar";
-import JoySignInSideTemplate from "./component/Login";
+import ResponsiveAppBar from "./component/navigation/ResponsiveAppBar";
+import Login from "./auth/Login";
 import Error from "./component/Error";
 import MyProfile from "./component/profile/MyProfile";
 import Patients from "./component/patients/Patients";
+import CssBaseline from "@mui/joy/CssBaseline";
+import {useAuth} from "./auth/AuthProvider";
 
 function App() {
     const locale = LOCALES.CROATIAN;
+    const auth = useAuth();
     const [language, setLanguage] = useState<string>(locale)
-    const {data: user} = useGetUserQuery();
-    console.log(user);
-    console.log(setLanguage);
 
     return (
         <IntlProvider messages={messages[language]}
@@ -36,18 +34,28 @@ function App() {
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={language}>
                     <BrowserRouter>
                         <CssBaseline/>
-                        <ResponsiveAppBar setLangugage={setLanguage} language={language}/>
+                        <ResponsiveAppBar setLanguage={setLanguage} language={language}/>
                         <Routes>
                             <Route path="/" element={<Navigate to="home"/>}/>
-                            <Route path="home" element={<SignInSide/>}/>
+                            <Route path="home" element={<Home/>}/>
                             <Route path="error" element={<Error/>}/>
-                            <Route path="sign-in" element={<JoySignInSideTemplate/>}/>
-                            <Route path="main" element={<Dashboard><Appointments/></Dashboard>}/>
-                            <Route path="profile" element={<Dashboard><MyProfile/></Dashboard>}/>
-                            <Route path="patients" element={<Dashboard><Patients/></Dashboard>}/>
-                            <Route path="appointments"
-                                   element={<Protected isLoggedIn={user?.email !== null}
-                                                       children={<Dashboard><Appointments/></Dashboard>}/>}/>
+                            <Route path="login" element={<Login/>}/>
+                            {auth?.user && <><Route path="main"
+                                                    element={<Protected
+                                                        isAuthenticated={auth?.isAuthenticated()}
+                                                        children={<Dashboard><Appointments/></Dashboard>}/>}/>
+                                <Route path="profile"
+                                       element={<Protected
+                                           isAuthenticated={auth?.isAuthenticated()}
+                                           children={<Dashboard><MyProfile/></Dashboard>}/>}/>
+                                <Route path="patients"
+                                       element={<Protected
+                                           isAuthenticated={auth?.isAuthenticated()}
+                                           children={<Dashboard><Patients/></Dashboard>}/>}/>
+                                <Route path="appointments"
+                                       element={<Protected
+                                           isAuthenticated={auth?.isAuthenticated()}
+                                           children={<Dashboard><Appointments/></Dashboard>}/>}/></>}
                         </Routes>
                     </BrowserRouter>
                 </LocalizationProvider>

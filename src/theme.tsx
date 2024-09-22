@@ -26,8 +26,8 @@ export default extendTheme({
             palette: {
                 primary: {
                     50: '#1D223F',
-                    100: '#0A318C',
-                    200: '#1347CC',
+                    100: '#50A1FF',
+                    200: '#50A1FF',
                     300: '#1055EA',
                     400: '#357AEA',
                     500: '#2E88F6',

@@ -8,16 +8,9 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 
 import framesxTheme from '../theme';
-import HeroLeft01 from '../blocks/HeroLeft01';
-import HeroLeft02 from '../blocks/HeroLeft02';
-import HeroLeft03 from '../blocks/HeroLeft03';
-import HeroLeft04 from '../blocks/HeroLeft04';
-import HeroLeft05 from '../blocks/HeroLeft05';
-import HeroLeft06 from '../blocks/HeroLeft06';
-import HeroLeft07 from '../blocks/HeroLeft07';
-import HeroLeft08 from '../blocks/HeroLeft08';
-import HeroLeft09 from '../blocks/HeroLeft09';
-import HeroLeft10 from '../blocks/HeroLeft10';
+import Description from './blocks/Description';
+import SecureLogin from './blocks/SecureLogin';
+import DoctorAuthorization from './blocks/DoctorAuthorization';
 
 export function ColorSchemeToggle() {
     const {mode, setMode} = useColorScheme();
@@ -54,7 +47,7 @@ export function ColorSchemeToggle() {
     );
 }
 
-export default function TeamExample() {
+export default function Home() {
     return (
         <CssVarsProvider disableTransitionOnChange theme={framesxTheme}>
             <CssBaseline/>
@@ -68,16 +61,9 @@ export default function TeamExample() {
                     },
                 }}
             >
-                <HeroLeft01/>
-                <HeroLeft02/>
-                <HeroLeft03/>
-                <HeroLeft04/>
-                <HeroLeft05/>
-                <HeroLeft06/>
-                <HeroLeft07/>
-                <HeroLeft08/>
-                <HeroLeft09/>
-                <HeroLeft10/>
+                <Description/>
+                <SecureLogin/>
+                <DoctorAuthorization/>
             </Box>
         </CssVarsProvider>
     );

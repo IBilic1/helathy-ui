@@ -2,7 +2,7 @@ import * as React from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Container from '@mui/joy/Container';
-import { typographyClasses } from '@mui/joy/Typography';
+import {typographyClasses} from '@mui/joy/Typography';
 
 export default function TwoSidedLayout({
                                            children,
@@ -26,7 +26,7 @@ export default function TwoSidedLayout({
                         gap: 12,
                     },
                 }),
-                reversed ? { flexDirection: 'column-reverse' } : { flexDirection: 'column' },
+                reversed ? {flexDirection: 'column-reverse'} : {flexDirection: 'column'},
             ]}
         >
             <Box
@@ -69,7 +69,7 @@ export default function TwoSidedLayout({
                 })}
             >
                 <img
-                    src="https://images.unsplash.com/photo-1483791424735-e9ad0209eea2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+                    src="openart-image_uOe1Zfsb_1726941459534_raw.jpg"
                     alt=""
                 />
             </AspectRatio>

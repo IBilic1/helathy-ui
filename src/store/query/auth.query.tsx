@@ -2,22 +2,28 @@ import {createApi} from '@reduxjs/toolkit/query/react'
 import {User} from "../../types/auth/types";
 import {baseQuery} from "../baseQuery";
 
-const BACKED_URL = process.env.REACT_APP_BACKEND
-
 export const authApi = createApi({
     reducerPath: 'authApi',
-    baseQuery: baseQuery(BACKED_URL || ''),
+    baseQuery: baseQuery(),
+    tagTypes: ['User'],
     endpoints: (builder) => ({
+        logout: builder.mutation<User, void>({
+            query: () => ({
+                url: `/logout`,
+                method: 'POST',
+            }),
+        }),
         getUser: builder.query<User, void>({
             query: () => ({
                 url: `/user/user-info`,
                 method: 'GET',
-                keepUnusedDataFor: 3600,
             }),
+            providesTags: ['User'],
         }),
     }),
 })
 
 export const {
-    useGetUserQuery
+    useGetUserQuery,
+    useLogoutMutation
 } = authApi

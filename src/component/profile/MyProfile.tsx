@@ -21,19 +21,17 @@ import CoronavirusIcon from '@mui/icons-material/Coronavirus';
 import {Sheet} from "@mui/joy";
 import {green} from "@mui/material/colors";
 import Avatar from "boring-avatars";
-import {useGetUserQuery} from "../../store/query/auth.query";
+import {useAuth} from "../../auth/AuthProvider";
 
 const Game = () => {
     const [position, setPosition] = useState({top: 0, left: 0});
 
     const handleClick = () => {
-        // Get the dimensions of the container
         const container = document.getElementById('game-container');
         const containerWidth = container?.clientWidth;
         const containerHeight = container?.clientHeight;
         const iconSize = 50; // Icon size (width and height)
 
-        // Generate random position within the container's bounds
         if (containerHeight && containerWidth) {
             const newTop = Math.random() * (containerHeight - iconSize);
             const newLeft = Math.random() * (containerWidth - iconSize);
@@ -70,11 +68,11 @@ const Game = () => {
     );
 };
 export default function MyProfile() {
-    const {data: user} = useGetUserQuery();
+    const auth = useAuth();
 
     return (
         <Box sx={{width: '100%'}}>
-            {user && <Stack
+            {auth?.user && <Stack
                 spacing={4}
                 sx={{
                     display: 'flex',
@@ -114,13 +112,13 @@ export default function MyProfile() {
                                 <FormControl
                                     sx={{display: {sm: 'flex-column', md: 'flex-row'}, gap: 2}}
                                 >
-                                    <Input size="sm" defaultValue={user?.name}/>
+                                    <Input size="sm" defaultValue={auth?.user?.name}/>
                                 </FormControl>
                             </Stack>
                             <Stack direction="row" spacing={2}>
                                 <FormControl>
                                     <FormLabel>Role</FormLabel>
-                                    <Input size="sm" defaultValue={user?.role}/>
+                                    <Input size="sm" defaultValue={auth?.user?.role}/>
                                 </FormControl>
                                 <FormControl sx={{flexGrow: 1}}>
                                     <FormLabel>Email</FormLabel>
@@ -129,7 +127,7 @@ export default function MyProfile() {
                                         type="email"
                                         startDecorator={<EmailRoundedIcon/>}
                                         placeholder="email"
-                                        defaultValue={user?.email}
+                                        defaultValue={auth?.user?.email}
                                         sx={{flexGrow: 1}}
                                     />
                                 </FormControl>
@@ -139,7 +137,7 @@ export default function MyProfile() {
                                     <FormLabel>Address</FormLabel>
                                     <Input
                                         size="sm"
-                                        defaultValue={user?.email}
+                                        defaultValue={auth?.user?.email}
                                         sx={{flexGrow: 1}}
                                         disabled={true}
                                     />

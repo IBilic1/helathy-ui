@@ -2,8 +2,7 @@ import * as React from 'react';
 import {useState} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {Button, Container, FormControl, FormLabel, Input, Modal, Option, Select, Typography} from '@mui/joy';
-import Grid from '@mui/material/Grid';
+import {Button, Container, FormControl, FormLabel, Input, Modal, Option, Select, Sheet, Typography} from '@mui/joy';
 import dayjs, {Dayjs} from "dayjs";
 import {
     useCreateAppointmentMutation,
@@ -20,19 +19,39 @@ export type EditAppointmentModalProps = {
     refetch: () => void;
 };
 
+const isSameOrBefore = (startTime: Date, endTime: Date) => {
+    return dayjs(startTime, 'HH:mm').isAfter(dayjs(endTime, 'HH:mm'));
+}
+
 const validationSchema = Yup.object({
-    startDateTime: Yup.date().required('Start time is required'),
-    endDateTime: Yup.date().required('End time is required'),
+    startDateTime: Yup.date()
+        .required('Start time is required')
+        .typeError('Invalid start time')
+        .min(new Date(), 'Start time must be in the present or future'),
+    endDateTime: Yup.date()
+        .required('End time is required')
+        .typeError('Invalid end time')
+        .test(
+            "startDateTime",
+            "End time must be after start time",
+            function (value) {
+                const {end_time} = this.parent;
+                return isSameOrBefore(value, end_time);
+            }
+        ),
     address: Yup.string().required('Address is required'),
-    patientEmail: Yup.string().email('Invalid email').required('Patient email is required')
+    patientEmail: Yup.string()
+        .email('Invalid email')
+        .required('Patient email is required')
 });
 
 export default function EditAppointmentModal({open, setOpen, appointment, refetch}: EditAppointmentModalProps) {
+    const [start, setStart] = useState<Dayjs | null>(null);
+    const [end, setEnd] = useState<Dayjs | null>(null);
+
     const [createAppointment] = useCreateAppointmentMutation();
     const [updateAppointment] = useUpdateAppointmentMutation();
     const {data: users} = useGetAllUsersQuery();
-    const [start, setStart] = useState<Dayjs | null>(null);
-    const [end, setEnd] = useState<Dayjs | null>(null);
 
     // Formik form handler
     const formik = useFormik({
@@ -96,8 +115,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                     <FormattedMessage id="appointment"/>
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
+                    <Sheet>
+                        <Sheet>
                             <FormControl error={formik.touched.startDateTime && Boolean(formik.errors.startDateTime)}>
                                 <FormLabel><FormattedMessage id="start"/></FormLabel>
                                 <Input
@@ -112,8 +131,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                     <Typography color="danger">{formik.errors.startDateTime}</Typography>
                                 )}
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Sheet>
+                        <Sheet>
                             <FormControl error={formik.touched.endDateTime && Boolean(formik.errors.endDateTime)}>
                                 <FormLabel><FormattedMessage id="end"/></FormLabel>
                                 <Input
@@ -128,8 +147,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                     <Typography color="danger">{formik.errors.endDateTime}</Typography>
                                 )}
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Sheet>
+                        <Sheet>
                             <FormControl>
                                 <FormLabel><FormattedMessage id="address"/></FormLabel>
                                 <Input
@@ -143,8 +162,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                     <Typography color="danger">{formik.errors.address}</Typography>
                                 )}
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Sheet>
+                        <Sheet>
                             <FormControl>
                                 <FormLabel><FormattedMessage id="prescription_patient"/></FormLabel>
                                 {users && (
@@ -164,8 +183,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                     <Typography color="danger">{formik.errors.patientEmail}</Typography>
                                 )}
                             </FormControl>
-                        </Grid>
-                    </Grid>
+                        </Sheet>
+                    </Sheet>
                     <Button
                         type="submit"
                         fullWidth

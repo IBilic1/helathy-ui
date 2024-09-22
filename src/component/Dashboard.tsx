@@ -1,17 +1,11 @@
 import * as React from 'react';
 import {styled} from '@mui/material/styles';
 import MuiDrawer from '@mui/joy/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/joy/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import Menu from './Menu';
 import Box from "@mui/joy/Box";
 import framesxTheme from "../theme";
 import {CssVarsProvider} from "@mui/joy/styles";
-import List from '@mui/joy/List';
 
 const drawerWidth: number = 240;
 
@@ -62,7 +56,7 @@ export default function Dashboard({children}: DashboardProps) {
                     height: '100vh',
                     overflow: 'auto',
                 })}>
-                    <Container maxWidth="lg" sx={{pt:6,mt: 4, mb: 4}}>
+                    <Container maxWidth="lg" sx={{pt: 6, mt: 4, mb: 4}}>
                         <Grid item xs={12}>
                             {children}
                         </Grid>

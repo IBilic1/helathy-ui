@@ -11,6 +11,9 @@ export default function Error() {
         <CssVarsProvider theme={framesxTheme} disableTransitionOnChange>
             <Box
                 sx={(theme) => ({
+                    [theme.getColorSchemeSelector('dark')]: {
+                        backgroundColor: 'black',
+                    },
                     minHeight: '100dvh',
                     width: '100%',
                     transition: 'width var(--Transition-duration)',
@@ -58,7 +61,6 @@ export default function Error() {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    color: 'white',
                                 }}
                             >
                                 <Stack

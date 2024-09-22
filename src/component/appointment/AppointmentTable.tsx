@@ -7,7 +7,9 @@ import ConfirmDialog from "../dialog/ConfirmDialog";
 import {useDeleteAppointmentMutation} from "../../store/query/appointment.query";
 import {useRole} from "../../utils/utils";
 import {FormattedMessage} from "react-intl";
-import {Dayjs} from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
+import {Button} from "@mui/joy";
+import Box from "@mui/joy/Box";
 
 export type BasicTableProp = {
     selectedDay?: Dayjs;
@@ -17,11 +19,12 @@ export type BasicTableProp = {
 
 export default function AppointmentTable({selectedDay, data, refetch}: BasicTableProp) {
     const isAdmin = useRole();
-    const [deleteAppointment] = useDeleteAppointmentMutation();
+    const [open, setOpen] = useState<boolean>(false);
+
+    const [openDeleteDialog, setDeleteDialog] = useState<boolean>(false);
     const [appointment, setAppointment] = useState<Appointment | undefined>();
     const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>();
-    const [open, setOpen] = useState<boolean>(false);
-    const [openDeleteDialog, setDeleteDialog] = useState<boolean>(false);
+    const [deleteAppointment] = useDeleteAppointmentMutation();
 
     const filteredData = data.filter((appointment) => {
         if (!selectedDay) return true;
@@ -37,7 +40,7 @@ export default function AppointmentTable({selectedDay, data, refetch}: BasicTabl
             <Table aria-label="appointments table">
                 <thead>
                 <tr>
-                    <th style={{width: '40%'}}><FormattedMessage id="appointments_address"/></th>
+                    <th style={{width: '30%'}}><FormattedMessage id="appointments_address"/></th>
                     <th><FormattedMessage id="start"/></th>
                     <th><FormattedMessage id="end"/></th>
                     <th><FormattedMessage id="doctor"/></th>
@@ -48,29 +51,32 @@ export default function AppointmentTable({selectedDay, data, refetch}: BasicTabl
                 {filteredData.map((row) => (
                     <tr key={row.id}>
                         <td>{row.address}</td>
-                        <td>{row.startDateTime}</td>
-                        <td>{row.endDateTime}</td>
+                        <td>{dayjs(row.startDateTime).format('YYYY-MM-DD HH:mm')}</td>
+                        <td>{dayjs(row.endDateTime).format('YYYY-MM-DD HH:mm')}</td>
                         <td>{row.doctor?.name}</td>
                         <td>
                             {isAdmin && (
-                                <div>
-                                    <button
+                                <Box>
+                                    <Button
+                                        variant='solid'
+                                        sx={{mr: '10px'}}
                                         onClick={() => {
                                             setAppointment(row);
                                             setOpen(true);
                                         }}
                                     >
                                         <FormattedMessage id="edit"/>
-                                    </button>
-                                    <button
+                                    </Button>
+                                    <Button
+                                        variant='outlined'
                                         onClick={() => {
                                             setAppointmentToDelete(row);
                                             setDeleteDialog(true);
                                         }}
                                     >
                                         <FormattedMessage id="delete"/>
-                                    </button>
-                                </div>
+                                    </Button>
+                                </Box>
                             )}
                         </td>
                     </tr>

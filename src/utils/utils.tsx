@@ -1,8 +1,6 @@
-import {useGetUserQuery} from "../store/query/auth.query";
+import {useAuth} from "../auth/AuthProvider";
 
 export const useRole = () => {
-    console.log("ivana");
-    const {data: user} = useGetUserQuery();
-    console.log(user);
-    return user?.role === 'ADMIN'
+    const auth = useAuth();
+    return auth?.user?.role === 'ADMIN'
 }

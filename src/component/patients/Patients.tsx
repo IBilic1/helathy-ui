@@ -3,45 +3,46 @@ import Table from '@mui/joy/Table';
 import Input from '@mui/joy/Input';
 import Box from '@mui/joy/Box';
 import Typography from "@mui/joy/Typography";
-import {Card, Sheet} from "@mui/joy";
+import {Card} from "@mui/joy";
+import {useGetAllUsersQuery} from "../../store/query/appointment.query";
 
 const initialData = [
-    { name: 'Jane Doe', email: 'jane.doe@example.com' },
-    { name: 'John Smith', email: 'john.smith@example.com' },
-    { name: 'Alice Johnson', email: 'alice.johnson@example.com' },
-    // Add more data as needed
+    {name: 'Jane Doe', email: 'jane.doe@example.com'},
+    {name: 'John Smith', email: 'john.smith@example.com'},
+    {name: 'Alice Johnson', email: 'alice.johnson@example.com'},
 ];
 
 export default function Petients() {
     const [searchTerm, setSearchTerm] = React.useState('');
+    const {data: users} = useGetAllUsersQuery();
 
     // Filter data based on search term
-    const filteredData = initialData.filter((row) =>
-        row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        row.email.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredData = users?.filter((row) =>
+        row?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        row?.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-        <Card variant="outlined" sx={{ p: 5 }}>
+        <Card variant="outlined" sx={{p: 5}}>
             <Box sx={{mb: 3}}>
                 <Typography level="h4">List of patients</Typography>
             </Box>
             <Input
                 placeholder="Search by name or email"
                 fullWidth
-                sx={{ mb: 2 }}
+                sx={{mb: 2}}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Table aria-label="searchable table">
                 <thead>
                 <tr>
-                    <th style={{ width: '50%' }}>Name</th>
+                    <th style={{width: '50%'}}>Name</th>
                     <th>Email</th>
                 </tr>
                 </thead>
                 <tbody>
-                {filteredData.map((row, index) => (
+                {filteredData?.map((row, index) => (
                     <tr key={index}>
                         <td>{row.name}</td>
                         <td>{row.email}</td>
