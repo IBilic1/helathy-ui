@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import {Button, Container, FormControl, FormLabel, Input, Modal, Option, Select, Sheet, Typography} from '@mui/joy';
 import dayjs, {Dayjs} from "dayjs";
 import {
-    useCreateAppointmentMutation,
+    useCreateAppointmentMutation, useGetAllPatientsQuery,
     useGetAllUsersQuery,
     useUpdateAppointmentMutation
 } from "../../store/query/appointment.query";
@@ -53,8 +53,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
 
     const [createAppointment] = useCreateAppointmentMutation();
     const [updateAppointment] = useUpdateAppointmentMutation();
-    const {data: users} = useGetAllUsersQuery();
-    console.log(appointment);
+    const {data: users} = useGetAllPatientsQuery();
+
     // Formik form handler
     const formik = useFormik({
         initialValues: {

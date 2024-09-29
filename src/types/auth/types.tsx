@@ -2,7 +2,7 @@ export type User = {
     id?: number;
     name?: string;
     email?: string;
-    role?: 'ADMIN' | 'USER';
+    role?: 'ADMIN' | 'USER' | 'SYSTEM_USER';
 };
 
 export type Appointment = {

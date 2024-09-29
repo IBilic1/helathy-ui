@@ -5,7 +5,7 @@ import {Appointment} from "../../types/auth/types";
 import EditAppointmentModal from "./EditAppointmentModal";
 import ConfirmDialog from "../dialog/ConfirmDialog";
 import {useDeleteAppointmentMutation} from "../../store/query/appointment.query";
-import {useRole} from "../../utils/utils";
+import {useAdminRole} from "../../utils/utils";
 import {FormattedMessage} from "react-intl";
 import dayjs, {Dayjs} from "dayjs";
 import {Button} from "@mui/joy";
@@ -18,7 +18,7 @@ export type BasicTableProp = {
 };
 
 export default function AppointmentTable({selectedDay, data, refetch}: BasicTableProp) {
-    const isAdmin = useRole();
+    const isAdmin = useAdminRole();
     const [open, setOpen] = useState<boolean>(false);
 
     const [openDeleteDialog, setDeleteDialog] = useState<boolean>(false);

@@ -8,7 +8,7 @@ import {useGetAppointmentsByDoctorQuery} from "../../store/query/appointment.que
 import {Appointment} from "../../types/auth/types";
 import SelectedDate from "../calnedar/SelectedDate";
 import dayjs, {Dayjs} from "dayjs";
-import {useRole} from "../../utils/utils";
+import {useAdminRole} from "../../utils/utils";
 import {FormattedMessage} from "react-intl";
 import globalStyles from "./styles";
 import framesxTheme from "../../theme";
@@ -35,7 +35,7 @@ const styles = {
 };
 
 export default function Appointments() {
-    const isAdmin = useRole();
+    const isAdmin = useAdminRole();
     const auth = useAuth();
     const navigate = useNavigate();
     const {data, refetch} = useGetAppointmentsByDoctorQuery();

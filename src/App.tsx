@@ -20,6 +20,7 @@ import MyProfile from "./component/profile/MyProfile";
 import Patients from "./component/patients/Patients";
 import CssBaseline from "@mui/joy/CssBaseline";
 import {useAuth} from "./auth/AuthProvider";
+import SystemUserPatients from "./component/patients/SystemUserPatients";
 
 function App() {
     const locale = LOCALES.CROATIAN;
@@ -51,11 +52,19 @@ function App() {
                                 <Route path="patients"
                                        element={<Protected
                                            isAuthenticated={auth?.isAuthenticated()}
+                                           isAdminProtected={true}
+                                           isAdminAuthenticated={auth?.user?.role === 'ADMIN'}
                                            children={<Dashboard><Patients/></Dashboard>}/>}/>
                                 <Route path="appointments"
                                        element={<Protected
                                            isAuthenticated={auth?.isAuthenticated()}
-                                           children={<Dashboard><Appointments/></Dashboard>}/>}/></>}
+                                           children={<Dashboard><Appointments/></Dashboard>}/>}/>
+                                <Route path="patients-edit"
+                                       element={<Protected
+                                           isAuthenticated={auth?.isAuthenticated()}
+                                           isSystemUserProtected={true}
+                                           isSystemUserAuthenticated={auth?.user?.role === 'SYSTEM_USER'}
+                                           children={<Dashboard><SystemUserPatients/></Dashboard>}/>}/></>}
                         </Routes>
                     </BrowserRouter>
                 </LocalizationProvider>
