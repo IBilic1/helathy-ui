@@ -2,9 +2,7 @@ import {PickersDay, PickersDayProps} from "@mui/x-date-pickers";
 import {Badge} from "@mui/material";
 import {Dayjs} from "dayjs";
 
-export default function ServerDay(
-    props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
-) {
+export default function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }) {
     const {highlightedDays = [], day, outsideCurrentMonth, ...other} = props;
 
     const isSelected =

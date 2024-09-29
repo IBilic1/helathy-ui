@@ -1,16 +1,19 @@
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export type ProtectedProps = {
-    isLoggedIn: boolean;
-    isAdminLogged?:boolean;
-    isAdminProtected?:boolean;
+    isAdminProtected?: boolean;
+    isAdminAuthenticated?: boolean;
+    isAuthenticated?: boolean;
     children: JSX.Element;
 }
 
-const Protected = ({isLoggedIn, children, isAdminLogged, isAdminProtected}: ProtectedProps) => {
-    if (!isLoggedIn || (isAdminProtected && !isAdminLogged)) {
-        return <Navigate to="/" replace/>;
+const Protected = ({children, isAdminProtected, isAuthenticated, isAdminAuthenticated}: ProtectedProps) => {
+    const navigate = useNavigate();
+    if (!isAuthenticated || (isAdminProtected && !isAdminAuthenticated)) {
+        navigate("/error");
     }
+
     return children;
 };
+
 export default Protected;

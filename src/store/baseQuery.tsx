@@ -1,16 +1,21 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import Cookies from "js-cookie";
 
-export const baseQuery = (url: string) => {
-    const access_token = localStorage.getItem('access_token');
-    const ORIGIN_URL = process.env.REACT_ORIGIN
+export const baseQuery = () => {
+    const BACKED_URL = process.env.REACT_APP_BACKEND
 
     return fetchBaseQuery(
         {
-            baseUrl: url,
-            prepareHeaders: async (headers) => {
-                headers.append('Origin', ORIGIN_URL || '');
-                if (access_token && access_token !== "undefined") {
-                    headers.append('Authorization', 'Bearer ' + access_token);
+            baseUrl: BACKED_URL,
+            credentials: "include",
+            prepareHeaders: (headers) => {
+                headers.append('Access-Control-Allow-Credentials', 'true');
+                headers.append('Access-Control-Allow-Origin', BACKED_URL || '');
+                const Cookies = require('js-cookie')
+                const csrfToken = Cookies.get('XSRF-TOKEN');
+
+                if (csrfToken) {
+                    headers.append('X-XSRF-TOKEN', csrfToken);
                 }
                 return headers;
             }
