@@ -1,54 +1,42 @@
 import * as React from 'react';
+import {useState} from 'react';
 
 import Table from '@mui/joy/Table';
 import Input from '@mui/joy/Input';
 import Box from '@mui/joy/Box';
 import Typography from "@mui/joy/Typography";
-import {Button, Card, Select} from "@mui/joy";
-import Option from '@mui/joy/Option';
-import {useChangeRoleMutation, useGetAllUsersQuery} from "../../store/query/appointment.query";
+import {Button, Card, Option, Select} from "@mui/joy";
+import {useGetAllUsersQuery} from "../../store/query/appointment.query";
 import {useAuth} from "../../auth/AuthProvider";
 import {useNavigate} from "react-router-dom";
 import {User} from "../../types/auth/types";
-import {useSnackbar} from "notistack";
+import {useSystemUserRole} from "../../utils/utils";
+import ChangeUserRoleModal from "./ChangeUserRoleModal";
 
 export default function SystemUserPatients() {
     const auth = useAuth();
+    const isSystemUser = useSystemUserRole();
     const navigate = useNavigate();
-    const snackbar = useSnackbar();
 
+    const [open, setOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [selectedRole, setSelectedRole] = React.useState<'USER' | 'ADMIN' | undefined>(undefined);
-    const [changeRole, {isError, isSuccess}] = useChangeRoleMutation();
-    const {data: users} = useGetAllUsersQuery();
+    const [searchRole, setSearchRole] = React.useState<'PATIENT' | 'DOCTOR' | 'NO ROLE' | null | undefined>(undefined);
+    const [selectedUser, setSelectedUser] = React.useState<User | undefined>(undefined);
+    const {data: users, refetch: refetchData} = useGetAllUsersQuery();
 
     // Filter data based on search term
     const filteredData = users?.filter((row) =>
-        row?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        row?.email?.toLowerCase().includes(searchTerm.toLowerCase())
+        (row?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        row?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ) &&
+        (row?.role === searchRole || (!row?.role && (searchRole === 'NO ROLE' || searchRole === null)))
     );
 
     React.useEffect(() => {
-        if (!auth?.user) {
+        if (!auth?.user || !isSystemUser) {
             navigate('/error')
         }
     }, [])
 
-    React.useEffect(() => {
-        if (isSuccess) {
-            snackbar.enqueueSnackbar('Role successfully changed', {variant: 'success'})
-        }
-    }, [isSuccess])
-
-    React.useEffect(() => {
-        if (isError) {
-            snackbar.enqueueSnackbar('Error occurred while changing role', {variant: 'error'})
-        }
-    }, [isError])
-
-    const onChange = (user: User, role: 'ADMIN' | 'USER' | undefined) => {
-        changeRole({...user, role})
-    };
 
     return (
         <Card variant="outlined" sx={{p: 5}}>
@@ -62,6 +50,16 @@ export default function SystemUserPatients() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <Select
+                placeholder="Search by role"
+                value={searchRole}
+                onChange={(event, value) => setSearchRole(value)}
+                sx={{width: '100%'}}
+            >
+                <Option value="DOCTOR">DOCTOR</Option>
+                <Option value="PATIENT">PATIENT</Option>
+                <Option value="NO ROLE">NO ROLE</Option>
+            </Select>
             <Table aria-label="searchable table">
                 <thead>
                 <tr>
@@ -76,26 +74,13 @@ export default function SystemUserPatients() {
                     <tr key={index}>
                         <td>{row.name}</td>
                         <td>{row.email}</td>
-                        <td>
-                            <Select
-                                defaultValue={row.role}
-                                onChange={(event, value) => {
-                                    const newRole = value as string;
-                                    if (newRole === 'ADMIN') {
-                                        setSelectedRole('ADMIN')
-                                    } else if (newRole === 'USER') {
-                                        setSelectedRole('USER')
-                                    }
-                                }}
-                                sx={{width: '100%'}}
-                            >
-                                <Option value="ADMIN">Admin</Option>
-                                <Option value="USER">User</Option>
-                            </Select>
-                        </td>
+                        <td>{row.role}</td>
                         <td>
                             <Button
-                                onClick={() => onChange(row, selectedRole)}
+                                onClick={() => {
+                                    setSelectedUser(row);
+                                    setOpen(true);
+                                }}
                                 variant="solid"
                             >
                                 Change Role
@@ -105,6 +90,9 @@ export default function SystemUserPatients() {
                 ))}
                 </tbody>
             </Table>
+            {
+                open && <ChangeUserRoleModal user={selectedUser} open={open} setOpen={setOpen} refetch={refetchData}/>
+            }
         </Card>
     );
 }

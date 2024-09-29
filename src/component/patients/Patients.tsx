@@ -8,8 +8,10 @@ import {Card} from "@mui/joy";
 import {useGetAllPatientsByDoctorQuery} from "../../store/query/appointment.query";
 import {useAuth} from "../../auth/AuthProvider";
 import {useNavigate} from "react-router-dom";
+import {useAdminRole} from "../../utils/utils";
 
 export default function Petients() {
+    const isAdmin = useAdminRole();
     const auth = useAuth();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = React.useState('');
@@ -23,7 +25,7 @@ export default function Petients() {
     );
 
     React.useEffect(() => {
-        if (!auth?.user) {
+        if (!auth?.user || !isAdmin) {
             navigate('/error')
         }
     }, [])

@@ -46,4 +46,4 @@ export default function Menu({setOpen}: MenuProps) {
             </ListItemButton>
         }
     </React.Fragment>
-};
+}

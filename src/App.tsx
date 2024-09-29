@@ -53,7 +53,7 @@ function App() {
                                        element={<Protected
                                            isAuthenticated={auth?.isAuthenticated()}
                                            isAdminProtected={true}
-                                           isAdminAuthenticated={auth?.user?.role === 'ADMIN'}
+                                           isAdminAuthenticated={auth?.user?.role === 'DOCTOR'}
                                            children={<Dashboard><Patients/></Dashboard>}/>}/>
                                 <Route path="appointments"
                                        element={<Protected

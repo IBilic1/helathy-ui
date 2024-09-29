@@ -18,7 +18,7 @@ const Protected = ({
                        isSystemUserAuthenticated
                    }: ProtectedProps) => {
     const navigate = useNavigate();
-    if (!isAuthenticated || (isAdminProtected && !isAdminAuthenticated) || (isSystemUserProtected && !isSystemUserAuthenticated )) {
+    if (!isAuthenticated || (isAdminProtected && !isAdminAuthenticated) || (isSystemUserProtected && !isSystemUserAuthenticated)) {
         navigate("/error");
     }
 

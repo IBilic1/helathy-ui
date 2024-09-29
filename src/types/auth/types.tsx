@@ -2,7 +2,7 @@ export type User = {
     id?: number;
     name?: string;
     email?: string;
-    role?: 'ADMIN' | 'USER' | 'SYSTEM_USER';
+    role?: 'DOCTOR' | 'PATIENT' | 'SYSTEM_USER';
 };
 
 export type Appointment = {
@@ -12,10 +12,6 @@ export type Appointment = {
     address: string;
     doctor?: User;
     patient?: User;
-};
-
-export type MyError = {
-    error: any
 };
 
 export type Medicine = {

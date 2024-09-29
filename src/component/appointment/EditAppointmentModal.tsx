@@ -5,13 +5,14 @@ import * as Yup from 'yup';
 import {Button, Container, FormControl, FormLabel, Input, Modal, Option, Select, Sheet, Typography} from '@mui/joy';
 import dayjs, {Dayjs} from "dayjs";
 import {
-    useCreateAppointmentMutation, useGetAllPatientsQuery,
-    useGetAllUsersQuery,
+    useCreateAppointmentMutation,
+    useGetAllPatientsQuery,
     useUpdateAppointmentMutation
 } from "../../store/query/appointment.query";
 import {Appointment, User} from "../../types/auth/types";
 import {FormattedMessage} from 'react-intl';
 import {useSnackbar} from "notistack";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 
 export type EditAppointmentModalProps = {
     open: boolean;
@@ -59,7 +60,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
     const formik = useFormik({
         initialValues: {
             startDateTime: start?.format('YYYY-MM-DDTHH:mm'),
-            endDateTime:  end?.format('YYYY-MM-DDTHH:mm'),
+            endDateTime: end?.format('YYYY-MM-DDTHH:mm'),
             address: appointment?.address || '',
             patientEmail: appointment?.patient?.email || '',
         },
@@ -76,8 +77,9 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                 }).then((value) => {
                     refetch();
                     setOpen(false);
-                    if ('error' in value && 'data' in value?.error && typeof value?.error?.data === 'string') {
-                        snackbar.enqueueSnackbar(value?.error?.data, {variant: 'error'})
+                    const error = (value as { error?: FetchBaseQueryError })?.error?.data;
+                    if (error && typeof error === 'string') {
+                        snackbar.enqueueSnackbar(error, {variant: 'error'});
                     }
                 });
             } else {
@@ -89,8 +91,9 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                 }).then((value) => {
                     refetch();
                     setOpen(false);
-                    if ('error' in value && 'data' in value?.error && typeof value?.error?.data === 'string') {
-                        snackbar.enqueueSnackbar(value?.error?.data, {variant: 'error'})
+                    const error = (value as { error?: FetchBaseQueryError })?.error?.data;
+                    if (error && typeof error === 'string') {
+                        snackbar.enqueueSnackbar(error, {variant: 'error'});
                     }
                 });
             }
