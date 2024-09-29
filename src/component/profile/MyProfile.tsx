@@ -22,10 +22,10 @@ import {Sheet} from "@mui/joy";
 import {green} from "@mui/material/colors";
 import Avatar from "boring-avatars";
 import {useAuth} from "../../auth/AuthProvider";
+import {useNavigate} from "react-router-dom";
 
 const Game = () => {
     const [position, setPosition] = useState({top: 0, left: 0});
-
     const handleClick = () => {
         const container = document.getElementById('game-container');
         const containerWidth = container?.clientWidth;
@@ -67,8 +67,17 @@ const Game = () => {
         </Sheet>
     );
 };
+
+
 export default function MyProfile() {
     const auth = useAuth();
+    const navigate = useNavigate();
+
+    React.useEffect(() => {
+        if (!auth?.user) {
+            navigate('/error')
+        }
+    }, [])
 
     return (
         <Box sx={{width: '100%'}}>
@@ -220,16 +229,6 @@ export default function MyProfile() {
                             </FormControl>
                         </div>
                     </Stack>
-                    <CardOverflow sx={{borderTop: '1px solid', borderColor: 'divider'}}>
-                        <CardActions sx={{alignSelf: 'flex-end', pt: 2}}>
-                            <Button size="sm" variant="outlined" color="neutral">
-                                Cancel
-                            </Button>
-                            <Button size="sm" variant="solid">
-                                Save
-                            </Button>
-                        </CardActions>
-                    </CardOverflow>
                 </Card>
                 <Card>
                     <Box>

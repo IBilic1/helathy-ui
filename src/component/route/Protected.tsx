@@ -9,10 +9,8 @@ export type ProtectedProps = {
 
 const Protected = ({children, isAdminProtected, isAuthenticated, isAdminAuthenticated}: ProtectedProps) => {
     const navigate = useNavigate();
-    console.log(isAuthenticated);
     if (!isAuthenticated || (isAdminProtected && !isAdminAuthenticated)) {
-        console.log("123");
-        navigate("/");
+        navigate("/error");
     }
 
     return children;

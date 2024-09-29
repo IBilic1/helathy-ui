@@ -21,6 +21,8 @@ import {
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import EditAppointmentModal from "./EditAppointmentModal";
+import {useAuth} from "../../auth/AuthProvider";
+import {useNavigate} from "react-router-dom";
 
 const styles = {
     container: {display: 'flex', width: '100%'},
@@ -34,6 +36,8 @@ const styles = {
 
 export default function Appointments() {
     const isAdmin = useRole();
+    const auth = useAuth();
+    const navigate = useNavigate();
     const {data, refetch} = useGetAppointmentsByDoctorQuery();
     const [open, setOpen] = useState<boolean>(false)
     const [highlightedDays, setHighlightedDays] = useState<number[] | undefined>()
@@ -49,6 +53,7 @@ export default function Appointments() {
             setHighlightedDays(data.map((date: Appointment) => {
                 return dayjs(date.endDateTime).date()
             }))
+            setSelectedDay(dayjs())
         }
     }, [data])
 
@@ -67,6 +72,12 @@ export default function Appointments() {
             refetch()
         }
     }, [open])
+
+    React.useEffect(() => {
+        if (!auth?.user) {
+            navigate('/error')
+        }
+    }, [])
 
     const materialTheme = extendMaterialTheme({
         colorSchemes: {
@@ -136,7 +147,7 @@ export default function Appointments() {
                                 </Typography>
                                 <Typography sx={styles.cardMargin} variant="soft">
                                     <FormattedMessage
-                                        id="doctor"/> {selectedAppointment?.doctor?.name} {selectedAppointment?.doctor?.name}
+                                        id="doctor"/> {selectedAppointment?.doctor?.name}
                                 </Typography>
                                 <Typography variant="soft">
                                     <FormattedMessage id="address"/>: {selectedAppointment?.address}

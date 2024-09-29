@@ -33,6 +33,12 @@ export const appointmentApi = createApi({
                 body,
             }),
         }),
+        getAllPatients: builder.query<User[], void>({
+            query: () => ({
+                url: `/user`,
+                method: 'GET',
+            }),
+        }),
         getAllUsers: builder.query<User[], void>({
             query: () => ({
                 url: `/user/all`,
@@ -52,7 +58,7 @@ export const {
     useGetAppointmentsByDoctorQuery,
     useCreateAppointmentMutation,
     useGetAllUsersQuery,
+    useGetAllPatientsQuery,
     useDeleteAppointmentMutation,
     useUpdateAppointmentMutation,
-    useGetAppointmentsByUserQuery
 } = appointmentApi

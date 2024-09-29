@@ -11,6 +11,7 @@ import {
 } from "../../store/query/appointment.query";
 import {Appointment, User} from "../../types/auth/types";
 import {FormattedMessage} from 'react-intl';
+import {useSnackbar} from "notistack";
 
 export type EditAppointmentModalProps = {
     open: boolean;
@@ -20,7 +21,7 @@ export type EditAppointmentModalProps = {
 };
 
 const isSameOrBefore = (startTime: Date, endTime: Date) => {
-    return dayjs(startTime, 'HH:mm').isAfter(dayjs(endTime, 'HH:mm'));
+    return dayjs(endTime).isAfter(dayjs(startTime));
 }
 
 const validationSchema = Yup.object({
@@ -34,9 +35,9 @@ const validationSchema = Yup.object({
         .test(
             "startDateTime",
             "End time must be after start time",
-            function (value) {
-                const {end_time} = this.parent;
-                return isSameOrBefore(value, end_time);
+            function () {
+                const {endDateTime, startDateTime} = this.parent;
+                return isSameOrBefore(startDateTime, endDateTime);
             }
         ),
     address: Yup.string().required('Address is required'),
@@ -46,23 +47,24 @@ const validationSchema = Yup.object({
 });
 
 export default function EditAppointmentModal({open, setOpen, appointment, refetch}: EditAppointmentModalProps) {
+    const snackbar = useSnackbar();
     const [start, setStart] = useState<Dayjs | null>(null);
     const [end, setEnd] = useState<Dayjs | null>(null);
 
     const [createAppointment] = useCreateAppointmentMutation();
     const [updateAppointment] = useUpdateAppointmentMutation();
     const {data: users} = useGetAllUsersQuery();
-
+    console.log(appointment);
     // Formik form handler
     const formik = useFormik({
         initialValues: {
-            startDateTime: start?.locale(),
-            endDateTime: end?.locale(),
+            startDateTime: start?.format('YYYY-MM-DDTHH:mm'),
+            endDateTime:  end?.format('YYYY-MM-DDTHH:mm'),
             address: appointment?.address || '',
             patientEmail: appointment?.patient?.email || '',
         },
         validationSchema,
-        enableReinitialize: false, // To update form fields when appointment changes
+        enableReinitialize: true,
         onSubmit: async (values) => {
             if (appointment) {
                 await updateAppointment({
@@ -71,9 +73,12 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                     endDateTime: values.endDateTime,
                     address: values.address,
                     patient: {email: values.patientEmail} as User,
-                }).then(() => {
+                }).then((value) => {
                     refetch();
                     setOpen(false);
+                    if ('error' in value && 'data' in value?.error && typeof value?.error?.data === 'string') {
+                        snackbar.enqueueSnackbar(value?.error?.data, {variant: 'error'})
+                    }
                 });
             } else {
                 await createAppointment({
@@ -81,9 +86,12 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                     endDateTime: values.endDateTime,
                     address: values.address,
                     patient: {email: values.patientEmail} as User,
-                }).then(() => {
+                }).then((value) => {
                     refetch();
                     setOpen(false);
+                    if ('error' in value && 'data' in value?.error && typeof value?.error?.data === 'string') {
+                        snackbar.enqueueSnackbar(value?.error?.data, {variant: 'error'})
+                    }
                 });
             }
         }
@@ -95,7 +103,6 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
             setEnd(dayjs(appointment.endDateTime));
         }
     }, [appointment]);
-    console.log(formik.errors);
 
     return (
         <Modal
@@ -174,7 +181,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                     >
                                         {users.map((user: User) => (
                                             <Option key={user.email} value={user.email}>
-                                                {user.name} {user.name}
+                                                {user.name}
                                             </Option>
                                         ))}
                                     </Select>

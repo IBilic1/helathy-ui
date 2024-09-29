@@ -1,26 +1,32 @@
 import * as React from 'react';
+
 import Table from '@mui/joy/Table';
 import Input from '@mui/joy/Input';
 import Box from '@mui/joy/Box';
 import Typography from "@mui/joy/Typography";
 import {Card} from "@mui/joy";
-import {useGetAllUsersQuery} from "../../store/query/appointment.query";
-
-const initialData = [
-    {name: 'Jane Doe', email: 'jane.doe@example.com'},
-    {name: 'John Smith', email: 'john.smith@example.com'},
-    {name: 'Alice Johnson', email: 'alice.johnson@example.com'},
-];
+import {useGetAllPatientsQuery} from "../../store/query/appointment.query";
+import {useAuth} from "../../auth/AuthProvider";
+import {useNavigate} from "react-router-dom";
 
 export default function Petients() {
+    const auth = useAuth();
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = React.useState('');
-    const {data: users} = useGetAllUsersQuery();
+
+    const {data: users} = useGetAllPatientsQuery();
 
     // Filter data based on search term
     const filteredData = users?.filter((row) =>
         row?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         row?.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    React.useEffect(() => {
+        if (!auth?.user) {
+            navigate('/error')
+        }
+    }, [])
 
     return (
         <Card variant="outlined" sx={{p: 5}}>

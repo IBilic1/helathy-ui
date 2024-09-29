@@ -65,7 +65,7 @@ function ResponsiveAppBar({setLanguage, language}: ResponsiveAppBarProps) {
                         </Typography>
                     </Link>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        {auth?.user?.email && <Link href="/main" sx={{color: 'white', display: 'flex'}}>
+                        {auth?.user?.email && <Link href="/appointments" sx={{color: 'white', display: 'flex'}}>
                             <Typography
                                 align="justify"
                                 noWrap

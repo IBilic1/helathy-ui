@@ -2,7 +2,6 @@ import React, {createContext, useContext} from 'react';
 import {User} from "../types/auth/types";
 import {authApi, useGetUserQuery, useLogoutMutation} from "../store/query/auth.query";
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
 
 type AuthProviderProp = {
     user?: User;

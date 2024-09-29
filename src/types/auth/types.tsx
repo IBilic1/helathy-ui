@@ -14,6 +14,10 @@ export type Appointment = {
     patient?: User;
 };
 
+export type MyError = {
+    error: any
+};
+
 export type Medicine = {
     id?: number;
     name: string;
