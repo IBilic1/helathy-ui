@@ -65,6 +65,7 @@ function App() {
                                            isSystemUserProtected={true}
                                            isSystemUserAuthenticated={auth?.user?.role === 'SYSTEM_USER'}
                                            children={<Dashboard><SystemUserPatients/></Dashboard>}/>}/></>}
+                            <Route path="*" element={<Error />} />
                         </Routes>
                     </BrowserRouter>
                 </LocalizationProvider>
