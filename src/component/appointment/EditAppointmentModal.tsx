@@ -13,6 +13,7 @@ import {Appointment, User} from "../../types/auth/types";
 import {FormattedMessage} from 'react-intl';
 import {useSnackbar} from "notistack";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import globalStyles from "./styles";
 
 export type EditAppointmentModalProps = {
     open: boolean;
@@ -125,8 +126,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                     <FormattedMessage id="appointment"/>
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
-                    <Sheet>
-                        <Sheet>
+                    <Container>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl error={formik.touched.startDateTime && Boolean(formik.errors.startDateTime)}>
                                 <FormLabel><FormattedMessage id="start"/></FormLabel>
                                 <Input
@@ -142,7 +143,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                        <Sheet>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl error={formik.touched.endDateTime && Boolean(formik.errors.endDateTime)}>
                                 <FormLabel><FormattedMessage id="end"/></FormLabel>
                                 <Input
@@ -158,7 +159,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                        <Sheet>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl>
                                 <FormLabel><FormattedMessage id="address"/></FormLabel>
                                 <Input
@@ -173,7 +174,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                        <Sheet>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl>
                                 <FormLabel><FormattedMessage id="prescription_patient"/></FormLabel>
                                 {users && (
@@ -194,7 +195,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                    </Sheet>
+                    </Container>
                     <Button
                         type="submit"
                         fullWidth

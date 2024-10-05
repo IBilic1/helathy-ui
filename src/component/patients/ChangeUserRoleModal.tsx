@@ -71,7 +71,9 @@ export default function ChangeUserRoleModal({user, refetch, setOpen, open}: Chan
                             disabled
                         />
                     </Sheet>
-                    <Sheet>
+                    <Sheet sx={{
+                        marginTop: 2,
+                    }}>
                         <Select
                             value={formik.values.role}
                             onChange={(event, value) => formik.setFieldValue('role', value as string)}

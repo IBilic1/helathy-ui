@@ -12,7 +12,7 @@ import {Button} from "@mui/joy";
 import Box from "@mui/joy/Box";
 
 export type BasicTableProp = {
-    selectedDay?: Dayjs;
+    selectedDay?: Dayjs | null;
     data: Appointment[];
     refetch: () => void;
 };
@@ -25,7 +25,6 @@ export default function AppointmentTable({selectedDay, data, refetch}: BasicTabl
     const [appointment, setAppointment] = useState<Appointment | undefined>();
     const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>();
     const [deleteAppointment] = useDeleteAppointmentMutation();
-
     const filteredData = data.filter((appointment) => {
         if (!selectedDay) return true;
         const appointmentDate = new Date(appointment.startDateTime || '');
@@ -43,7 +42,7 @@ export default function AppointmentTable({selectedDay, data, refetch}: BasicTabl
                     <th style={{width: '30%'}}><FormattedMessage id="appointments_address"/></th>
                     <th><FormattedMessage id="start"/></th>
                     <th><FormattedMessage id="end"/></th>
-                    <th><FormattedMessage id="doctor"/></th>
+                    <th><FormattedMessage id="patient"/></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -53,7 +52,7 @@ export default function AppointmentTable({selectedDay, data, refetch}: BasicTabl
                         <td>{row.address}</td>
                         <td>{dayjs(row.startDateTime).format('YYYY-MM-DD HH:mm')}</td>
                         <td>{dayjs(row.endDateTime).format('YYYY-MM-DD HH:mm')}</td>
-                        <td>{row.doctor?.name}</td>
+                        <td>{row.patient?.name}</td>
                         <td>
                             {isAdmin && (
                                 <Box>

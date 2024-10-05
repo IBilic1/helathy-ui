@@ -20,15 +20,15 @@ export default function SystemUserPatients() {
 
     const [open, setOpen] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = React.useState('');
-    const [searchRole, setSearchRole] = React.useState<'PATIENT' | 'DOCTOR' | 'NO ROLE' | null | undefined>(undefined);
+    const [searchRole, setSearchRole] = React.useState<'PATIENT' | 'DOCTOR' | null>(null);
     const [selectedUser, setSelectedUser] = React.useState<User | undefined>(undefined);
     const {data: users, refetch: refetchData} = useGetAllUsersQuery();
 
     // Filter data based on search term
     const filteredData = users?.filter((row) =>
         (row?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        row?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ) &&
-        (row?.role === searchRole || (!row?.role && (searchRole === 'NO ROLE' || searchRole === null)))
+            row?.email?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (searchRole && row?.role === searchRole) || (!searchRole && (searchRole === 'NO ROLE' || searchRole === null))
     );
 
     React.useEffect(() => {
@@ -58,7 +58,6 @@ export default function SystemUserPatients() {
             >
                 <Option value="DOCTOR">DOCTOR</Option>
                 <Option value="PATIENT">PATIENT</Option>
-                <Option value="NO ROLE">NO ROLE</Option>
             </Select>
             <Table aria-label="searchable table">
                 <thead>
