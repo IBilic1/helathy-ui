@@ -1,12 +1,18 @@
-FROM node:18.14.0-alpine3.17
+FROM node:18.14.0-alpine3.17 AS build
 
-WORKDIR /usr/src/app
-COPY package.json yarn.lock ./
-RUN yarn
-COPY . ./
+ARG REACT_APP_BACKEND=/api
+WORKDIR /app
+
+COPY ./package.json /app/package.json
+COPY ./package-lock.json /app/package-lock.json
+
+RUN yarn install
+COPY . .
 RUN yarn build
 
-FROM bitnami/nginx:latest
-COPY --from=builder /usr/src/app/build /app
-EXPOSE 8080
+
+FROM nginx
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
