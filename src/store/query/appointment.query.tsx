@@ -33,9 +33,15 @@ export const appointmentApi = createApi({
                 body,
             }),
         }),
-        getAllPatients: builder.query<User[], void>({
+        getAllPatientsByDoctor: builder.query<User[], void>({
             query: () => ({
                 url: `/user`,
+                method: 'GET',
+            }),
+        }),
+        getAllPatients: builder.query<User[], void>({
+            query: () => ({
+                url: `/user/patient/all`,
                 method: 'GET',
             }),
         }),
@@ -43,6 +49,13 @@ export const appointmentApi = createApi({
             query: () => ({
                 url: `/user/all`,
                 method: 'GET',
+            }),
+        }),
+        changeRole: builder.mutation<User, User>({
+            query: (body) => ({
+                url: `/user`,
+                method: 'PATCH',
+                body,
             }),
         }),
         deleteAppointment: builder.mutation<void, number>({
@@ -59,6 +72,8 @@ export const {
     useCreateAppointmentMutation,
     useGetAllUsersQuery,
     useGetAllPatientsQuery,
+    useGetAllPatientsByDoctorQuery,
     useDeleteAppointmentMutation,
     useUpdateAppointmentMutation,
+    useChangeRoleMutation
 } = appointmentApi

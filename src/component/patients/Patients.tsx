@@ -5,16 +5,18 @@ import Input from '@mui/joy/Input';
 import Box from '@mui/joy/Box';
 import Typography from "@mui/joy/Typography";
 import {Card} from "@mui/joy";
-import {useGetAllPatientsQuery} from "../../store/query/appointment.query";
+import {useGetAllPatientsByDoctorQuery} from "../../store/query/appointment.query";
 import {useAuth} from "../../auth/AuthProvider";
 import {useNavigate} from "react-router-dom";
+import {useAdminRole} from "../../utils/utils";
 
 export default function Petients() {
+    const isAdmin = useAdminRole();
     const auth = useAuth();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = React.useState('');
 
-    const {data: users} = useGetAllPatientsQuery();
+    const {data: users} = useGetAllPatientsByDoctorQuery();
 
     // Filter data based on search term
     const filteredData = users?.filter((row) =>
@@ -23,7 +25,7 @@ export default function Petients() {
     );
 
     React.useEffect(() => {
-        if (!auth?.user) {
+        if (!auth?.user || !isAdmin) {
             navigate('/error')
         }
     }, [])

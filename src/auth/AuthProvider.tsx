@@ -32,7 +32,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     }
 
     const isAdminAuthenticated = () => {
-        return user !== undefined && user.role === "ADMIN";
+        return user !== undefined && user.role === "DOCTOR";
     }
 
     return (

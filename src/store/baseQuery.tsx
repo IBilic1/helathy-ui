@@ -11,7 +11,6 @@ export const baseQuery = () => {
             prepareHeaders: (headers) => {
                 headers.append('Access-Control-Allow-Credentials', 'true');
                 headers.append('Access-Control-Allow-Origin', BACKED_URL || '');
-                const Cookies = require('js-cookie')
                 const csrfToken = Cookies.get('XSRF-TOKEN');
 
                 if (csrfToken) {

@@ -6,12 +6,14 @@ import {Button, Container, FormControl, FormLabel, Input, Modal, Option, Select,
 import dayjs, {Dayjs} from "dayjs";
 import {
     useCreateAppointmentMutation,
-    useGetAllUsersQuery,
+    useGetAllPatientsQuery,
     useUpdateAppointmentMutation
 } from "../../store/query/appointment.query";
 import {Appointment, User} from "../../types/auth/types";
 import {FormattedMessage} from 'react-intl';
 import {useSnackbar} from "notistack";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import globalStyles from "./styles";
 
 export type EditAppointmentModalProps = {
     open: boolean;
@@ -53,13 +55,13 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
 
     const [createAppointment] = useCreateAppointmentMutation();
     const [updateAppointment] = useUpdateAppointmentMutation();
-    const {data: users} = useGetAllUsersQuery();
-    console.log(appointment);
+    const {data: users} = useGetAllPatientsQuery();
+
     // Formik form handler
     const formik = useFormik({
         initialValues: {
             startDateTime: start?.format('YYYY-MM-DDTHH:mm'),
-            endDateTime:  end?.format('YYYY-MM-DDTHH:mm'),
+            endDateTime: end?.format('YYYY-MM-DDTHH:mm'),
             address: appointment?.address || '',
             patientEmail: appointment?.patient?.email || '',
         },
@@ -76,8 +78,9 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                 }).then((value) => {
                     refetch();
                     setOpen(false);
-                    if ('error' in value && 'data' in value?.error && typeof value?.error?.data === 'string') {
-                        snackbar.enqueueSnackbar(value?.error?.data, {variant: 'error'})
+                    const error = (value as { error?: FetchBaseQueryError })?.error?.data;
+                    if (error && typeof error === 'string') {
+                        snackbar.enqueueSnackbar(error, {variant: 'error'});
                     }
                 });
             } else {
@@ -89,8 +92,9 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                 }).then((value) => {
                     refetch();
                     setOpen(false);
-                    if ('error' in value && 'data' in value?.error && typeof value?.error?.data === 'string') {
-                        snackbar.enqueueSnackbar(value?.error?.data, {variant: 'error'})
+                    const error = (value as { error?: FetchBaseQueryError })?.error?.data;
+                    if (error && typeof error === 'string') {
+                        snackbar.enqueueSnackbar(error, {variant: 'error'});
                     }
                 });
             }
@@ -122,8 +126,8 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                     <FormattedMessage id="appointment"/>
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
-                    <Sheet>
-                        <Sheet>
+                    <Container>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl error={formik.touched.startDateTime && Boolean(formik.errors.startDateTime)}>
                                 <FormLabel><FormattedMessage id="start"/></FormLabel>
                                 <Input
@@ -139,7 +143,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                        <Sheet>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl error={formik.touched.endDateTime && Boolean(formik.errors.endDateTime)}>
                                 <FormLabel><FormattedMessage id="end"/></FormLabel>
                                 <Input
@@ -155,7 +159,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                        <Sheet>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl>
                                 <FormLabel><FormattedMessage id="address"/></FormLabel>
                                 <Input
@@ -170,7 +174,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                        <Sheet>
+                        <Sheet sx={globalStyles.sheet}>
                             <FormControl>
                                 <FormLabel><FormattedMessage id="prescription_patient"/></FormLabel>
                                 {users && (
@@ -191,7 +195,7 @@ export default function EditAppointmentModal({open, setOpen, appointment, refetc
                                 )}
                             </FormControl>
                         </Sheet>
-                    </Sheet>
+                    </Container>
                     <Button
                         type="submit"
                         fullWidth
