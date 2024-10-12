@@ -10,7 +10,7 @@ export const baseQuery = () => {
             credentials: "include",
             prepareHeaders: (headers) => {
                 headers.append('Access-Control-Allow-Credentials', 'true');
-                headers.append('Access-Control-Allow-Origin', BACKED_URL || '');
+                headers.append('Access-Control-Allow-Origin', '*' || '');
                 const csrfToken = Cookies.get('XSRF-TOKEN');
 
                 if (csrfToken) {
