@@ -1,0 +1,78 @@
+name: healthy-ui
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+jobs:  
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.18.0'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build the app
+        run: yarn build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: react-app-build
+          path: build
+  push_to_registry:
+    needs: build
+    name: build docker image
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ibilic1/healthy-ui
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  openshift:
+     needs:  push_to_registry
+     name: deploy to openshift
+     runs-on: ubuntu-latest
+     environment: production
+     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+     steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+      - name: Log in to OpenShift 
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_SECRET }}
+          insecure_skip_tls_verify: true
+          namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
+      - run: chmod +x "${GITHUB_WORKSPACE}/.github/workflows/script.sh"
+      - run: | 
+           "${GITHUB_WORKSPACE}/.github/workflows/script.sh" ${{ secrets.APP_NAME }} ${{ secrets.IMAGE_REGISTRY }} ${{ secrets.OPENSHIFT_NAMESPACE }}
