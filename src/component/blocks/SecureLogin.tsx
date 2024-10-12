@@ -7,11 +7,11 @@ import {FormattedMessage} from "react-intl";
 
 export default function SecureLogin() {
     const onGithubLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/github"
+        window.location.href = "/oauth2/authorization/github"
     }
 
     const onGoogleLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/google"
+        window.location.href = "/oauth2/authorization/google"
     }
 
     return (
