@@ -12,14 +12,17 @@ RUN yarn build
 
 FROM nginx:alpine
 
-ARG BACKEND
-ENV BACKEND=${BACKEND}
-
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf  /etc/nginx/conf.d/my-site.conf.template
 COPY --from=build /app/build /usr/share/nginx/html
+
+ARG BACKEND
+ENV BACKEND=$BACKEND
 
 RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
     chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
 
+RUN apk --no-cache add gettext
+
 EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
+
+CMD ["/bin/sh", "-c", "envsubst <  /etc/nginx/conf.d/my-site.conf.template < /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
