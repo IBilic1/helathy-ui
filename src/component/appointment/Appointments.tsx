@@ -18,11 +18,12 @@ import {
     experimental_extendTheme as extendMaterialTheme,
     THEME_ID
 } from "@mui/material/styles";
-import {LocalizationProvider} from "@mui/x-date-pickers";
+import {LocalizationProvider, PickersDayProps} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import EditAppointmentModal from "./EditAppointmentModal";
 import {useAuth} from "../../auth/AuthProvider";
 import {useNavigate} from "react-router-dom";
+import {DayCalendarProps, SlotComponentPropsFromProps} from "@mui/x-date-pickers/internals";
 
 const styles = {
     container: {display: 'flex', width: '100%'},
@@ -131,7 +132,10 @@ export default function Appointments() {
                                     },
                                     day: {
                                         highlightedDays,
-                                    } as any,
+                                    } as SlotComponentPropsFromProps<PickersDayProps<Dayjs>, object, DayCalendarProps<Dayjs> & {
+                                        day: Dayjs;
+                                        selected: boolean;
+                                    }>,
                                 }}
                                 onChange={(value => setSelectedDay(value))}
                             />
@@ -150,7 +154,7 @@ export default function Appointments() {
                                         id="doctor"/> {selectedAppointment?.doctor?.name}
                                 </Typography>
                                 <Typography sx={styles.cardMargin} variant="soft">
-                                    <FormattedMessage  id="appointment_patient"/> {selectedAppointment?.patient?.name}
+                                    <FormattedMessage id="appointment_patient"/> {selectedAppointment?.patient?.name}
                                 </Typography>
                                 <Typography variant="soft">
                                     <FormattedMessage id="address"/>: {selectedAppointment?.address}

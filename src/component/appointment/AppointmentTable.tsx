@@ -89,9 +89,11 @@ export default function AppointmentTable({selectedDay, data, refetch}: BasicTabl
                 title="Delete appointment"
                 description="Are you sure you want to delete the appointment?"
                 onConfirm={() => {
-                    appointmentToDelete?.id && deleteAppointment(appointmentToDelete?.id).then(() => {
-                        refetch();
-                    });
+                    if (appointmentToDelete?.id) {
+                        deleteAppointment(appointmentToDelete?.id).then(() => {
+                            refetch();
+                        });
+                    }
                 }}
             />
         </>
