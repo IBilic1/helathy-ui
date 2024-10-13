@@ -1,10 +1,10 @@
-FROM node:18.14.0-alpine3.17 AS build
+FROM node:18.18.0 AS build
 
 ARG REACT_APP_BACKEND=/api
 WORKDIR /app
 
 COPY ./package.json /app/package.json
-COPY ./package-lock.json /app/package-lock.json
+COPY ./yarn.lock /app/yarn.lock
 
 RUN yarn
 
