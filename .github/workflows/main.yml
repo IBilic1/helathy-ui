@@ -32,7 +32,7 @@ jobs:
           name: react-app-build
           path: build
   push_to_registry:
-    needs: test
+    needs: build
     name: Build and push Docker image
     runs-on: ubuntu-latest
     if: |
