@@ -57,10 +57,12 @@ jobs:
       - name: Set Backend Environment Variable
         id: backend_env
         run: |
+          set -e  # Exit on first error
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "BACKEND=${{ secrets.BACKEND_TEST }}" >> $GITHUB_ENV
+            echo "BACKEND=backend_test" >> $GITHUB_ENV
           else
             echo "BACKEND=${{ secrets.BACKEND }}" >> $GITHUB_ENV
+          fi
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
