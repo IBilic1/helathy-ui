@@ -12,8 +12,7 @@ RUN yarn build
 
 FROM nginx:alpine
 
-ARG BACKEND
-ENV BACKEND=$BACKEND
+ARG BACKEND=$BACKEND
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/build /usr/share/nginx/html
