@@ -8,8 +8,9 @@ on:
     branches:
       - main
       - develop
-jobs:
+jobs:  
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -53,6 +54,13 @@ jobs:
           tags: |
             type=ref,event=branch,pattern=main,enable=true,tag=main
             type=ref,event=branch,pattern=develop,enable=true,tag=develop
+      - name: Set Backend Environment Variable
+        id: backend_env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "BACKEND=${{ secrets.BACKEND_TEST }}" >> $GITHUB_ENV
+          else
+            echo "BACKEND=${{ secrets.BACKEND }}" >> $GITHUB_ENV
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
@@ -61,6 +69,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args:
+            BACKEND: ${{ env.BACKEND }}
 
   openshift_main:
     needs: push_to_registry
