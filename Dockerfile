@@ -16,6 +16,7 @@ COPY ./nginx.conf  /etc/nginx/nginx1.conf
 COPY --from=build /app/build /usr/share/nginx/html
 
 ARG BACKEND
+
 ENV BACKEND=$BACKEND
 
 RUN chown -R nginx:nginx /var/cache/nginx /var/run /var/log/nginx /etc/nginx/conf.d
