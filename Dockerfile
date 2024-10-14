@@ -12,7 +12,7 @@ RUN yarn build
 
 FROM nginx:alpine
 
-COPY ./nginx.conf  /etc/nginx/conf.d/my-site.conf.template
+COPY ./nginx.conf  /etc/nginx/nginx1.conf
 COPY --from=build /app/build /usr/share/nginx/html
 
 ARG BACKEND
@@ -25,4 +25,4 @@ RUN apk --no-cache add gettext
 
 EXPOSE 3000
 
-CMD ["/bin/sh", "-c", "envsubst <  /etc/nginx/conf.d/my-site.conf.template < /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "export BACKEND && envsubst '$$BACKEND' < /etc/nginx/nginx1.conf >/etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
