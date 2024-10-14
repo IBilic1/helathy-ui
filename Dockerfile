@@ -12,18 +12,19 @@ RUN yarn build
 
 FROM nginx:alpine
 
-COPY ./nginx.conf /etc/nginx/nginx1.conf
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --chown=nginx:nginx ./nginx.conf /etc/nginx/nginx1.conf
+COPY --chown=nginx:nginx --from=build /app/build /usr/share/nginx/html
+
 
 ARG BACKEND
 ENV BACKEND=$BACKEND
 
 RUN chown -R nginx:nginx /var/cache/nginx /var/run /var/log/nginx /etc/nginx/conf.d
-RUN touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
+RUN chmod -R 777 /etc/nginx
+RUN chmod -R 777 /var/cache/nginx
+RUN chmod -R 777 /var/run
 
 RUN apk --no-cache add gettext
-
-RUN chmod -R 755 /etc/nginx/conf.d
 
 EXPOSE 3000
 
