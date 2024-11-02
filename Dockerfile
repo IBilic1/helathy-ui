@@ -15,7 +15,6 @@ FROM nginx:alpine
 COPY --chown=nginx:nginx ./nginx.conf /etc/nginx/nginx1.conf
 COPY --chown=nginx:nginx --from=build /app/build /usr/share/nginx/html
 
-
 ARG BACKEND
 ENV BACKEND=$BACKEND
 
@@ -30,4 +29,4 @@ EXPOSE 3000
 
 USER nginx
 
-CMD ["/bin/sh", "-c", "export BACKEND && envsubst '$$BACKEND' < /etc/nginx/nginx1.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "export BACKEND && envsubst '$$BACKEND' < /etc/nginx/nginx1.conf > /etc/nginx/conf.d/nginx.conf && nginx -g 'daemon off;'"]
