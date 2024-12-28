@@ -17,7 +17,7 @@ COPY --chown=nginx:nginx --from=build /app/build /usr/share/nginx/html
 
 ARG BACKEND
 ENV BACKEND=$BACKEND
-
+RUN echo "The BACKEND variable is: $BACKEND"
 RUN chown -R nginx:nginx /var/cache/nginx /var/run /var/log/nginx /etc/nginx/conf.d
 RUN chmod -R 777 /etc/nginx
 RUN chmod -R 777 /var/cache/nginx
