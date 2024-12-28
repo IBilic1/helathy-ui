@@ -74,7 +74,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            BACKEND: ${{ env.BACKEND }}
+            BACKEND=${{ env.BACKEND }}
 
   openshift_main:
     needs: push_to_registry
